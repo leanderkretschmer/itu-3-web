@@ -56,6 +56,10 @@ if (!in_array('viewer', $user_groups)) {
 <!--------------------- Login Abfrage Ende -------------------->
 
 
+<?php
+$seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
+?>
+
 <!DOCTYPE html>
 <html lang="de">
 
@@ -67,21 +71,39 @@ if (!in_array('viewer', $user_groups)) {
 </head>
 
 <body>
+    <?php if ($seite == 'startseite') { ?>
+    <div class="startseite">
+        <h1>ITu-3</h1>
+    </div>
+    <?php } else { ?>
     <div class="container">
         <aside class="sidebar">
             <h2>Themen</h2>
             <ul>
-                <li><a href="#">Thema 1</a></li>
-                <li><a href="#">Thema 2</a></li>
-                <li><a href="#">Thema 3</a></li>
+                <li><a href="?seite=thema1">Thema 1</a></li>
+                <li><a href="?seite=thema2">Thema 2</a></li>
+                <li><a href="?seite=thema3">Thema 3</a></li>
             </ul>
         </aside>
         <main class="content">
-            <h1>Willkommen!</h1>
-            <p>Hier werden die Inhalte der Themen angezeigt.</p>
+            <?php
+                if ($seite == 'thema1') {
+                    echo '<h1>Thema 1</h1><p>Inhalt von Thema 1...</p>';
+                } elseif ($seite == 'thema2') {
+                    echo '<h1>Thema 2</h1><p>Inhalt von Thema 2...</p>';
+                } elseif ($seite == 'thema3') {
+                    echo '<h1>Thema 3</h1><p>Inhalt von Thema 3...</p>';
+                } else {
+                    echo '<h1>Willkommen!</h1><p>Wähle ein Thema aus der Seitenleiste.</p>';
+                }
+                ?>
         </main>
     </div>
+    <?php } ?>
 </body>
+
+</html>
+
 
 </html>
 
