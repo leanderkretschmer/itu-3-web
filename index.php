@@ -69,6 +69,9 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
 </head>
 
 <body>
+    <div id="loading-screen">
+        <div class="loader"></div>
+    </div>
     <?php if ($seite == 'startseite') { ?>
     <div class="startseite">
         <h1>ITu-3</h1>
