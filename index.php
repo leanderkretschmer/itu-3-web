@@ -79,24 +79,7 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     <div class="startseite">
         <h1>ITu-3</h1>
     </div>
-        <div class="button-container">
-        <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
-            <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj"
-                alt="WebUntis Logo">
-        </a>
-    
-        <a href="https://bkhaspel.de/" class="website-button">
-            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
-                alt="BKH Logo">
-            <span class="button-text">BKH</span>
-        </a>
-    
-        <a href="https://bkb-europaschule.eu/" class="website-button">
-            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
-                alt="BKB Logo">
-            <span class="button-text">BKB</span>
-        </a>
-    </div>
+       
 
     <?php } else { ?>
     <div class="container">
@@ -116,7 +99,24 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         </div>
     </div>
 
-
+ <div class="button-container">
+        <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
+            <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj"
+                alt="WebUntis Logo">
+        </a>
+    
+        <a href="https://bkhaspel.de/" class="website-button">
+            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
+                alt="BKH Logo">
+            <span class="button-text">BKH</span>
+        </a>
+    
+        <a href="https://bkb-europaschule.eu/" class="website-button">
+            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
+                alt="BKB Logo">
+            <span class="button-text">BKB</span>
+        </a>
+    </div>
 
 
     <div class="content">
