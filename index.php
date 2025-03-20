@@ -84,6 +84,57 @@ function display_buttons($buttons)
 ?>
 <!--------------------- Login Abfrage Ende -------------------->
 
+<?php
+// Array mit den Button-Definitionen (Text, URL, Logo)
+$buttons = array(
+    array('text' => 'Google', 'url' => 'https://www.google.com', 'logo' => ''),
+    array(
+        'text' => 'IServ',
+        'url' => 'https://bkhaspel.de/iserv',
+        'logo' =>
+            'https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png',
+    ),
+    array(
+        'text' => 'WebUntis',
+        'url' => 'https://perseus.webuntis.com/WebUntis/#/basic/login',
+        'logo' => 'https://www.untis.at/fileadmin/user_upload/Icon-1024x1024.png',
+    ),
+    array('text' => 'Google', 'url' => 'https://www.google.com', 'logo' => ''),
+    array(
+        'text' => 'IServ',
+        'url' => 'https://bkhaspel.de/iserv',
+        'logo' =>
+            'https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png',
+    ),
+    array(
+        'text' => 'WebUntis',
+        'url' => 'https://perseus.webuntis.com/WebUntis/#/basic/login',
+        'logo' => 'https://www.untis.at/fileadmin/user_upload/Icon-1024x1024.png',
+    ),
+);
+
+// Funktion zum Anzeigen der Buttons
+function display_buttons($buttons)
+{
+    echo '<div class="button-container">';
+    foreach ($buttons as $button) {
+        echo '<a href="' .
+            htmlspecialchars($button['url']) .
+            '" class="custom-button">';
+        if (!empty($button['logo'])) {
+            echo '<img src="' .
+                htmlspecialchars($button['logo']) .
+                '" alt="' .
+                htmlspecialchars($button['text']) .
+                '" class="button-logo">';
+        } else {
+            echo htmlspecialchars($button['text']);
+        }
+        echo '</a>';
+    }
+    echo '</div>';
+}
+?>
 <!DOCTYPE html>
 <html lang="de">
 
@@ -120,6 +171,16 @@ function display_buttons($buttons)
         /* Zentriert den Text im Button */
         width: 200px;
         /* Feste Breite für alle Buttons */
+    }
+
+    /* Style für das Logo im Button */
+    .button-logo {
+        max-width: 80%;
+        /*Anpassen der Logo-Größe */
+        max-height: 40px;
+        /*Anpassen der Logo-Größe */
+        vertical-align: middle;
+        /* Zentriert das Logo vertikal */
     }
     </style>
 </head>
