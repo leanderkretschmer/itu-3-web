@@ -101,10 +101,10 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     </div>
     <?php } ?>
 <?php
-$school = 'DEINE_SCHULE';
-$username = 'DEIN_BENUTZERNAME';
-$password = 'DEIN_PASSWORT';
-$baseUrl = 'https://webuntisURL/WebUntis/jsonrpc.do?school=' . urlencode($school);
+$school = 'bk-am-haspel';
+$username = 'phil.hendrik.maruhn';
+$password = '6IOKHXYTEI3AYUIT';
+$baseUrl = 'https://perseus.webuntis.com/WebUntis/jsonrpc.do?school=' . urlencode($school);
 
 // Login
 $session = curl_init();
