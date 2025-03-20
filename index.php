@@ -132,8 +132,7 @@ function display_buttons($buttons)
 
             <?php
             // Hier werden die Buttons angezeigt
-            $user_buttons = get_user_buttons($conn, $user_id);
-            display_buttons($user_buttons);
+            display_buttons($buttons);
             ?>
         </main>
     </div>
