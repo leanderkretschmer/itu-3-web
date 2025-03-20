@@ -15,24 +15,57 @@ body {
     position: relative;
 }
 
-.logout-container {
+.user-menu {
     position: absolute;
     top: 15px;
     right: 15px;
-}
-
-.logout-btn {
-    background-color: #808080; /* Grau */
-    color: white;
-    padding: 10px 15px;
-    border-radius: 5px; /* Abgerundete Ecken */
-    text-decoration: none; /* Entfernt Unterstreichung von Links */
-    margin: 15px 15px; /* Margin oben und rechts */
     display: inline-block;
 }
 
-.logout-btn:hover {
-    background-color: #555; /* Dunkleres Grau beim Überfahren */
+.user-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    border-radius: 50%;
+    overflow: hidden;
+    width: 50px;  /* Passe die Größe nach Bedarf an */
+    height: 50px; /* Passe die Größe nach Bedarf an */
+}
+
+.user-button img {
+    width: 100%;
+    height: auto;
+    display: block;
+}
+
+.dropdown-content {
+    display: none;
+    position: absolute;
+    background-color: #f9f9f9;
+    min-width: 120px;
+    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+    z-index: 1;
+    right: 0;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.dropdown-content a {
+    color: black;
+    padding: 12px 16px;
+    text-decoration: none;
+    display: block;
+    text-align: left;
+}
+
+.dropdown-content a:hover {
+    background-color: #ddd;
+}
+
+/* JavaScript Klasse, um das Dropdown anzuzeigen */
+.show {
+    display: block;
 }
 
 
