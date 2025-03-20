@@ -127,16 +127,19 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
             }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
         });
 
-        // Dropdown anzeigen/verstecken
-        document.querySelector('.user-button').addEventListener('click', function() {
-            const dropdownContent = document.querySelector('.dropdown-content');
+        // Dropdown anzeigen/verstecken bei Button-Klick
+        const userButton = document.querySelector('.user-button');
+        const dropdownContent = document.querySelector('.dropdown-content');
+
+        userButton.addEventListener('click', function(event) {
+            // Verhindert, dass das Klick-Ereignis nach unten durch den Button "propagiert"
+            event.stopPropagation();
             dropdownContent.classList.toggle('show');
         });
 
-        // Schließe Dropdown, wenn außerhalb geklickt wird
+        // Schließen des Dropdowns, wenn außerhalb des Menüs geklickt wird
         window.addEventListener('click', function(event) {
             if (!event.target.matches('.user-button') && !event.target.matches('.dropdown-content') && !event.target.matches('.dropdown-content a')) {
-                const dropdownContent = document.querySelector('.dropdown-content');
                 if (dropdownContent.classList.contains('show')) {
                     dropdownContent.classList.remove('show');
                 }
@@ -144,5 +147,6 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         });
     </script>
 </body>
+
 
 </html>
