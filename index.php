@@ -24,12 +24,12 @@ if (!isset($_SESSION['user_id'])) {
             $_SESSION['user_id'] = $user_id;
         } else {
             // Ungültiger Cookie, Weiterleitung zur Login-Seite
-            header('Location: login.php');
+            header('Location: login');
             exit;
         }
     } else {
         // Kein Cookie gesetzt, Weiterleitung zur Login-Seite
-        header('Location: login.php');
+        header('Location: login');
         exit;
     }
 }
