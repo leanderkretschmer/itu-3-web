@@ -52,30 +52,6 @@ body {
     position: relative;
 }
 
-.user-menu {
-    position: absolute;
-    top: 15px;
-    right: 15px;
-    display: inline-block;
-}
-
-.user-button {
-    background-color: transparent;
-    border: none;
-    cursor: pointer;
-    padding: 0;
-    border-radius: 50%;
-    overflow: hidden;
-    width: 50px;  /* Passe die Größe nach Bedarf an */
-    height: 50px; /* Passe die Größe nach Bedarf an */
-}
-
-.user-button img {
-    width: 100%;
-    height: auto;
-    display: block;
-}
-
 .dropdown-content {
     display: none;
     position: absolute;
