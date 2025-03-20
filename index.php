@@ -148,5 +148,39 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
             }
         });
     </script>
+    <div id="news-container">
+        <div id="news-content">
+            <!-- Hier werden die Nachrichten angezeigt -->
+        </div>
+    </div>
+    <script>
+        function loadNews() {
+            const newsContainer = document.getElementById('news-content');
+            const apiUrl = 'https://www.tagesschau.de/api2/news';
+    
+            fetch(apiUrl)
+                .then(response => response.json())
+                .then(data => {
+                    if (data.news && data.news.length > 0) {
+                        let newsItem = data.news[0]; // Neueste Nachricht
+                        let newsText = `<p>${newsItem.title}</p><p>${newsItem.topline}</p>`; // Titel und Zusammenfassung
+    
+                        newsContainer.innerHTML = newsText;
+                    } else {
+                        newsContainer.innerHTML = '<p>Keine Nachrichten gefunden.</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Fehler beim Abrufen der Nachrichten:', error);
+                    newsContainer.innerHTML = '<p>Fehler beim Laden der Nachrichten.</p>';
+                });
+        }
+    
+        // Nachrichten beim Laden der Seite laden
+        window.addEventListener('load', loadNews);
+    
+        // Nachrichten alle 10 Minuten aktualisieren (optional)
+        setInterval(loadNews, 600000); // 600000 Millisekunden = 10 Minuten
+    </script>
 </body>
 </html>
