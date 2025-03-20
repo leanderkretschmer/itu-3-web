@@ -100,65 +100,6 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         </main>
     </div>
     <?php } ?>
-<?php
-$school = 'bk-am-haspel';
-$username = 'phil.hendrik.maruhn';
-$password = '6IOKHXYTEI3AYUIT';
-$baseUrl = 'https://perseus.webuntis.com/WebUntis/jsonrpc.do?school=' . urlencode($school);
-
-// Login
-$session = curl_init();
-curl_setopt($session, CURLOPT_URL, $baseUrl);
-curl_setopt($session, CURLOPT_POST, 1);
-curl_setopt($session, CURLOPT_POSTFIELDS, json_encode([
-    'id' => 1,
-    'method' => 'authenticate',
-    'params' => [
-        'user' => $username,
-        'password' => $password,
-        'client' => 'WebUntis'
-    ],
-    'jsonrpc' => '2.0'
-]));
-curl_setopt($session, CURLOPT_RETURNTRANSFER, true);
-curl_setopt($session, CURLOPT_HTTPHEADER, ['Content-Type: application/json']);
-$response = json_decode(curl_exec($session), true);
-
-if (!isset($response['result']['sessionId'])) {
-    die('Login fehlgeschlagen!');
-}
-$sessionId = $response['result']['sessionId'];
-
-// Stundenplan abrufen
-curl_setopt($session, CURLOPT_POSTFIELDS, json_encode([
-    'id' => 2,
-    'method' => 'getTimetable',
-    'params' => [
-        'studentId' => 12345, // Setze die richtige Schüler-ID
-        'startDate' => date('Ymd'),
-        'endDate' => date('Ymd', strtotime('+7 days'))
-    ],
-    'jsonrpc' => '2.0'
-]));
-curl_setopt($session, CURLOPT_HTTPHEADER, [
-    'Content-Type: application/json',
-    'Cookie: JSESSIONID=' . $sessionId
-]);
-$timetable = json_decode(curl_exec($session), true);
-curl_close($session);
-
-// Stundenplan anzeigen
-echo "<h1>Stundenplan</h1><table border='1'>";
-echo "<tr><th>Datum</th><th>Stunde</th><th>Fach</th><th>Lehrer</th></tr>";
-foreach ($timetable['result'] as $lesson) {
-    echo "<tr>";
-    echo "<td>" . date('d.m.Y', strtotime($lesson['date'])) . "</td>";
-    echo "<td>" . $lesson['period'] . "</td>";
-    echo "<td>" . $lesson['subject'] . "</td>";
-    echo "<td>" . $lesson['teacher'] . "</td>";
-    echo "</tr>";
-}
-echo "</table>";
 
     <!-- Logout Button -->
     <br>
@@ -169,5 +110,3 @@ echo "</table>";
 
 
 </html>
-
-
