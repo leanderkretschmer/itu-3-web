@@ -10,20 +10,20 @@ body {
     left: 0;
     width: 100%;
     height: 100%;
-    background: #fff; /* oder eine andere Hintergrundfarbe */
+    background: #24292e; /* Angepasste Hintergrundfarbe */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 1000; /* Stelle sicher, dass er über allem liegt */
+    z-index: 1000;
 }
 
 .loader {
-    border: 16px solid #f3f3f3; /* Light grey */
-    border-top: 16px solid #3498db; /* Blue */
+    border: 8px solid #444; /* Dunkleres Grau für den Rahmen */
+    border-top: 8px solid #fff; /* Weiße Farbe für den rotierenden Teil */
     border-radius: 50%;
-    width: 120px;
-    height: 120px;
-    animation: spin 2s linear infinite;
+    width: 60px;    /* Verkleinerte Breite */
+    height: 60px;   /* Verkleinerte Höhe */
+    animation: spin 1s linear infinite; /* Etwas schnellere Rotation */
 }
 
 @keyframes spin {
