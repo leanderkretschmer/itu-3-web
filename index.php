@@ -109,4 +109,13 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         <a href="logout.php">Logout</a>
     </div>
 </body>
+<script>
+window.addEventListener('load', function() {
+    const loadingScreen = document.getElementById('loading-screen');
+    loadingScreen.classList.add('fade-out');
+    setTimeout(function() {
+        loadingScreen.style.display = 'none';
+    }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
+});
+</script>
 </html>
