@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         // Weiterleitung zur Startseite
-        header('Location: home.php');
+        header('Location: ../index.php');
         exit;
     } else {
         $error_message = 'Benutzername oder Passwort ist falsch.';
@@ -54,14 +54,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Login</title>
+    <title>Login – ITU3 Schulwebsite</title>
     <style>
-        /* Grundlegendes Styling für das Schul-Theme */
+        /* Modernes, schulisches Styling */
         body {
-            background-color: #f0f8ff; /* Helles Blau für den Hintergrund */
-            color: #333; /* Dunkle Schriftfarbe */
-            font-family: 'Arial', sans-serif; /* Sans-serif Schriftart */
-            font-size: 18px;
+            background-color: #f4f7f9;
+            color: #333;
+            font-family: Arial, sans-serif;
+            font-size: 16px;
             text-align: center;
             margin: 0;
             padding: 0;
@@ -69,87 +69,103 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         h1 {
             margin-top: 50px;
-            font-size: 36px;
-            color: #2c3e50; /* Dunkelblau für die Überschrift */
+            font-size: 32px;
+            color: #00529b; /* Schul-/Klassenfarbe */
         }
 
         .login-container {
-            width: 400px; /* Feste Breite für das Container */
-            margin: 50px auto; /* Zentrieren */
+            max-width: 400px;
+            margin: 30px auto;
             padding: 20px;
-            background-color: #ffffff; /* Weißer Hintergrund für das Formular */
-            border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
+            background-color: #ffffff;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
         }
 
         .login-container label {
             display: block;
-            margin-bottom: 10px;
-            font-weight: bold; /* Fettdruck für Labels */
+            margin-bottom: 5px;
+            font-weight: bold;
         }
 
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 100%; /* Volle Breite */
-            padding: 12px;
-            background-color: #ecf0f1; /* Helles Grau für Eingabefelder */
-            color: #333;
-            border: 1px solid #bdc3c7; /* Graue Umrandung */
-            border-radius: 5px;
-            margin-bottom: 10px;
+            width: 90%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
             font-size: 16px;
         }
 
         .login-container input[type="checkbox"] {
-            margin-right: 10px;
+            margin-right: 5px;
         }
 
         .login-container button {
-            background-color: #3498db; /* Blau für den Button */
-            color: #ffffff; /* Weiße Schriftfarbe */
-            padding: 12px 20px;
+            background-color: #00529b;
+            color: #fff;
+            padding: 10px;
             border: none;
-            border-radius: 5px;
+            border-radius: 4px;
             cursor: pointer;
-            font-size: 18px;
             width: 100%;
+            font-size: 16px;
         }
 
         .login-container button:hover {
-            background-color: #2980b9; /* Dunkleres Blau beim Hover */
+            background-color: #003d73;
         }
 
         .error-message {
-            color: red;
-            font-size: 16px;
+            color: #d8000c;
+            margin-bottom: 15px;
         }
 
         .login-container p {
-            margin-top: 20px;
-            font-size: 16px;
+            margin-top: 15px;
+            font-size: 14px;
+            color: #555;
+        }
+
+        /* Dezenter Hintergrundeffekt (optional) */
+        .background-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('pattern.png'); /* Ein dezentes Muster, ggf. anpassen */
+            opacity: 0.1;
+            z-index: -1;
         }
     </style>
 </head>
 <body>
-    <h1>Willkommen beim Schul-Login</h1>
+    <div class="background-pattern"></div>
+    <h1>Willkommen ITU3</h1>
 
     <?php if (isset($error_message)): ?>
         <p class="error-message"><?= htmlspecialchars($error_message) ?></p>
     <?php endif; ?>
 
     <div class="login-container">
-        <form action="login.php" method="POST">
+        <form action="index.php" method="POST">
             <label for="username">Benutzername:</label>
-            <input type="text" id="username" name="username" required placeholder="Geben Sie Ihren Benutzernamen ein"><br>
+            <input type="text" id="username" name="username" required placeholder="Geben Sie Ihren Benutzernamen ein">
 
             <label for="password">Passwort:</label>
-            <input type="password" id="password" name="password" required placeholder="Geben Sie Ihr Passwort ein"><br>
+            <input type="password" id="password" name="password" required placeholder="Geben Sie Ihr Passwort ein">
 
-            <label for="remember_me">Angemeldet bleiben:</label>
-            <input type="checkbox" id="remember_me" name="remember_me"><br>
+            <label>
+                <input type="checkbox" id="remember_me" name="remember_me">
+                Angemeldet bleiben
+            </label>
 
             <button type="submit">Einloggen</button>
         </form>
+        <p><a href="passwort_vergeben.php">Passwort vergessen?</a></p>
     </div>
 </body>
 </html>
