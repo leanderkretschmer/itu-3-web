@@ -159,13 +159,15 @@ body {
     background-color: #4CAF50; /* Grüner Hintergrund */
     color: white; /* Weiße Schrift */
     border: none;
-    padding: 10px 10px;
+    padding: 15px; /* Gleiche Höhe und Breite */
     border-radius: 50%; /* Rundes Design */
     font-size: 20px; /* Größe des Icons */
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
+    width: 50px; /* Definiert eine feste Breite */
+    height: 50px; /* Definiert eine feste Höhe */
 }
 
 .user-button i {
