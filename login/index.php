@@ -167,5 +167,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         </form>
         <p><a href="passwort_vergeben.php">Passwort vergessen?</a></p>
     </div>
+<img src="../Bilder/Keine-Lehrer.png" alt="Keine Lehrer" style="width: 100px; height: auto; margin-top: 10px;">
 </body>
 </html>
