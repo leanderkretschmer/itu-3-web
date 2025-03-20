@@ -60,30 +60,25 @@ if (!in_array('viewer', $user_groups)) {
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <title>Viewer-Bereich</title>
-    <style>
-        .logout-btn {
-            display: inline-block;
-            padding: 10px 20px;
-            margin-top: 20px;
-            background-color: #d9534f;
-            color: #fff;
-            text-decoration: none;
-            border-radius: 5px;
-        }
-        .logout-btn:hover {
-            background-color: #c9302c;
-        }
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meine Themen-Seite</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <?php
-    // Ausgabe des aktuellen Datums und der Uhrzeit
-    echo "Current date and time: " . date("Y-m-d H:i:s");
-    ?>
-
-    <!-- Logout Button -->
-    <br>
-    <a class="logout-btn" href="logout.php">Logout</a>
+    <div class="container">
+        <aside class="sidebar">
+            <h2>Themen</h2>
+            <ul>
+                <li><a href="#">Thema 1</a></li>
+                <li><a href="#">Thema 2</a></li>
+                <li><a href="#">Thema 3</a></li>
+            </ul>
+        </aside>
+        <main class="content">
+            <h1>Willkommen!</h1>
+            <p>Hier werden die Inhalte der Themen angezeigt.</p>
+        </main>
+    </div>
 </body>
 </html>
+
