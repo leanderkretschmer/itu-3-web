@@ -1,6 +1,3 @@
-
-
-<!-- Login Abfrage -->
 <?php
 session_start();
 
@@ -52,6 +49,38 @@ $user_groups = explode(';', $user_groups);
 if (!in_array('viewer', $user_groups)) {
     die("Zugriff verweigert. Sie benötigen Viewer-Rechte. <br><br><a href='/home.php' style='padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>Zurück zur Startseite</a>");
 }
+
+// Funktion zum Abrufen der Buttons aus der Datenbank
+function get_user_buttons($conn, $user_id)
+{
+    $buttons = array();
+    $query = "SELECT link_text, link_url FROM user_buttons WHERE user_id = ?";
+    $stmt = $conn->prepare($query);
+    $stmt->bind_param('i', $user_id);
+    $stmt->execute();
+    $result = $stmt->get_result();
+
+    while ($row = $result->fetch_assoc()) {
+        $buttons[] = $row;
+    }
+
+    $stmt->close();
+    return $buttons;
+}
+
+// Funktion zum Anzeigen der Buttons
+function display_buttons($buttons)
+{
+    echo '<div class="button-container">';
+    foreach ($buttons as $button) {
+        echo '<a href="' .
+            htmlspecialchars($button['link_url']) .
+            '" class="custom-button">' .
+            htmlspecialchars($button['link_text']) .
+            '</a>';
+    }
+    echo '</div>';
+}
 ?>
 <!--------------------- Login Abfrage Ende -------------------->
 
@@ -63,41 +92,51 @@ if (!in_array('viewer', $user_groups)) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ITU-3</title>
     <link rel="stylesheet" href="style.css">
+    <style>
+    /* Style für den Button-Container */
+    .button-container {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        /* Links ausgerichtet */
+        margin-top: 20px;
+        /* Abstand nach oben */
+    }
+
+    /* Style für die Buttons */
+    .custom-button {
+        display: block;
+        /* Macht den Link zu einem Block-Element, um die volle Breite zu nutzen */
+        padding: 10px 20px;
+        margin-bottom: 10px;
+        /* Abstand zwischen den Buttons */
+        background-color: #4CAF50;
+        color: white;
+        text-decoration: none;
+        border-radius: 5px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+        /* Schatten für den Button */
+        text-align: center;
+        /* Zentriert den Text im Button */
+        width: 200px;
+        /* Feste Breite für alle Buttons */
+    }
+    </style>
 </head>
 
 <body>
-    <?php if ($seite == 'startseite') { ?>
-    <div class="startseite">
-        <h1>ITu-3</h1>
-    </div>
-    <?php } else { ?>
     <div class="container">
-        <aside class="sidebar">
-            <h2>Themen</h2>
-            <ul>
-                <li><a href="?seite=thema1">Thema 1</a></li>
-                <li><a href="?seite=thema2">Thema 2</a></li>
-                <li><a href="?seite=thema3">Thema 3</a></li>
-            </ul>
-        </aside>
         <main class="content">
+            <h1>Willkommen!</h1>
+            <p>Hier sind deine Links:</p>
+
             <?php
-                if ($seite == 'thema1') {
-                    echo '<h1>Thema 1</h1><p>Inhalt von Thema 1...</p>';
-                } elseif ($seite == 'thema2') {
-                    echo '<h1>Thema 2</h1><p>Inhalt von Thema 2...</p>';
-                } elseif ($seite == 'thema3') {
-                    echo '<h1>Thema 3</h1><p>Inhalt von Thema 3...</p>';
-                } else {
-                    echo '<h1>Willkommen!</h1><p>Wähle ein Thema aus der Seitenleiste.</p>';
-                    echo '<div class="stundenplan-container">';
-                    echo get_timetable_data();
-                    echo '</div>';
-                }
-                ?>
+            // Hier werden die Buttons angezeigt
+            $user_buttons = get_user_buttons($conn, $user_id);
+            display_buttons($user_buttons);
+            ?>
         </main>
     </div>
-    <?php } ?>
 
     <!-- Logout Button -->
     <br>
@@ -105,4 +144,3 @@ if (!in_array('viewer', $user_groups)) {
 </body>
 
 </html>
-
