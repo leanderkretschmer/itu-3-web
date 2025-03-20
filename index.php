@@ -105,12 +105,5 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     <div class="dropdown-content">
         <a href="logout.php">Logout</a>
     </div>
-</div>
-
 </body>
-
-
-</html>
-
-
 </html>
