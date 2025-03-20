@@ -97,12 +97,15 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                 ?>
         </main>
     </div>
-    <?php } ?>
+       <?php } ?>
+    <div class="logout-container">
+        <!-- Logout Button -->
+        <a class="logout-btn" href="logout.php">Logout</a>
+    </div>
 
-    <!-- Logout Button -->
     <br>
-    <a class="logout-btn" href="logout.php">Logout</a>
 </body>
+
 
 </html>
 
