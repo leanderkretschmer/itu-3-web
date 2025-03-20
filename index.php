@@ -66,7 +66,10 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meine Themen-Seite</title>
     <link rel="stylesheet" href="style.css">
+    <!-- Font Awesome CDN hinzufügen -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
+
 
 <body>
     <div id="loading-screen">
@@ -97,18 +100,32 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                 } else {
                     echo '<h1>Willkommen!</h1><p>Wähle ein Thema aus der Seitenleiste.</p>';
                 }
-                ?>
+            ?>
         </main>
     </div>
-       <?php } ?>
+    <?php } ?>
+
+    <!-- Benutzer-Button oben rechts -->
     <div class="user-menu">
-    <button class="user-button">
-        <img src="user-image.jpg" alt="User Avatar">
-    </button>
-    <div class="dropdown-content">
-        <a href="logout.php">Logout</a>
+        <a href="logout.php">
+            <button class="user-button">
+                <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
+            </button>
+        </a>
     </div>
+
+    <script>
+        window.addEventListener('load', function() {
+            const loadingScreen = document.getElementById('loading-screen');
+            loadingScreen.classList.add('fade-out');
+            setTimeout(function() {
+                loadingScreen.style.display = 'none';
+            }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
+        });
+    </script>
 </body>
+
+
 <script>
 window.addEventListener('load', function() {
     const loadingScreen = document.getElementById('loading-screen');
