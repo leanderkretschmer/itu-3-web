@@ -100,7 +100,7 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
             <span class="button-text">GWB</span>
         </a>
         <a href="https://dotnetfiddle.net/" class="website-button">
-            <img src="https://dotnetfiddle.net/content/images/logo.png"
+            <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_.NET_logo.png"
                 alt="GWB Logo">
             <span class="button-text">C# Web</span>
         </a>
