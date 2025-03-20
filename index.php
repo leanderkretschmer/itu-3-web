@@ -65,33 +65,9 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
 </head>
 
 <body>
-    <div id="loading-screen">
-        <div class="loader"></div>
-    </div>
-
-    <?php if ($seite == 'startseite') { ?>
     <div class="startseite">
         <h1>ITu-3</h1>
-    </div>
-    <?php } else { ?>
-    <div class="container">
-    </div>
-    <?php } ?>
-
-    <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
-    <div class="user-menu">
-        <button class="user-button">
-            <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
-        </button>
-        <!-- Dropdown-Menü -->
-        <div class="dropdown-content">
-            <a href="profile.php">Profil</a>
-            <a href="settings.php">Einstellungen</a>
-            <a href="logout.php">Ausloggen</a>
-        </div>
-    </div>
-
-    <div class="button-container">
+<div class="button-container">
         <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
             <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj"
                 alt="WebUntis Logo">
@@ -109,14 +85,27 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
             <span class="button-text">BKB</span>
         </a>
     </div>
+    </div>
+
+
+    <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
+    <div class="user-menu">
+        <button class="user-button">
+            <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
+        </button>
+        <!-- Dropdown-Menü -->
+        <div class="dropdown-content">
+            <a href="profile.php">Profil</a>
+            <a href="settings.php">Einstellungen</a>
+            <a href="logout.php">Ausloggen</a>
+        </div>
+    </div>
 
     <script>
         window.addEventListener('load', function() {
+            // Entfernen des Ladebildschirms, da er nicht mehr benötigt wird
             const loadingScreen = document.getElementById('loading-screen');
-            loadingScreen.classList.add('fade-out');
-            setTimeout(function() {
-                loadingScreen.style.display = 'none';
-            }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
+            loadingScreen.style.display = 'none';
         });
 
         // Dropdown anzeigen/verstecken bei Button-Klick
