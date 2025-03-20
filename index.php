@@ -84,6 +84,11 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                 alt="BKB Logo">
             <span class="button-text">BKB</span>
         </a>
+        <a href="https://bkb-europaschule.eu/" class="website-button">
+            <img src="https://th.bing.com/th/id/R.697057d80dd892e17d17f89c0aa8be45?rik=iJ1M0IXdhTjJBA&pid=ImgRaw&r=0"
+                alt="BKB Logo">
+            <span class="button-text">BKB</span>
+        </a>
     </div>
     </div>
 
