@@ -118,6 +118,24 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         </div>
     </div>
 
+
+
+
+    <div class="content">
+        <div class="button-container">
+            <!-- 10x6 Buttons -->
+            <?php
+            // 10x6 = 60 Buttons, also 60 Button-Elemente erstellen
+            for ($i = 1; $i <= 60; $i++) {
+                echo '<button class="grid-button">Button ' . $i . '</button>';
+            }
+            ?>
+        </div>
+    </div>
+
+
+
+
     <script>
         window.addEventListener('load', function() {
             const loadingScreen = document.getElementById('loading-screen');
