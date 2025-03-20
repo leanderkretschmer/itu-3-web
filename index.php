@@ -89,6 +89,16 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                 alt="BKB Logo">
             <span class="button-text">Classbook</span>
         </a>
+        <a href="https://www.gesetze-im-internet.de/bgb/" class="website-button">
+            <img src="https://www.kerstin-celina.de/wp-content/uploads/2021/04/gesetzbuch.png"
+                alt="BGB Logo">
+            <span class="button-text">BGB</span>
+        </a>
+        <a href="https://www.gesetze-im-internet.de/gwb/" class="website-button">
+            <img src="https://www.kerstin-celina.de/wp-content/uploads/2021/04/gesetzbuch.png"
+                alt="GWB Logo">
+            <span class="button-text">GWB</span>
+        </a>
     </div>
     </div>
 
