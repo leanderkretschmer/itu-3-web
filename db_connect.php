@@ -1,9 +1,9 @@
 
 <?php
 $host = 'servercampus.xyz';
-$dbname = 's5_startpage';
-$username = 'u5_0kqGQBSAzE';
-$password = 'SY7MCOKCsaSQ98oJ@By=E=cj';
+$dbname = 's7_itu3';
+$username = 'u7_HASBJBcL22';
+$password = 'DWtvviP1=XB1D!!a8uYR2sUM';
 
 // MySQLi-Verbindung
 $conn = new mysqli($host, $username, $password, $dbname);
