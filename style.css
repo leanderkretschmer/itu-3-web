@@ -240,27 +240,25 @@ body {
     display: block;
 }
 
-/* Grid für die Buttons 10x6 */
-.button-container {
-    display: grid;
-    grid-template-columns: repeat(10, 1fr); /* 10 Spalten */
-    grid-template-rows: repeat(6, 1fr); /* 6 Reihen */
-    gap: 10px; /* Abstand zwischen den Buttons */
-}
-
-/* Stil für die Buttons */
-.grid-button {
-    background-color: #4CAF50; /* Grüner Hintergrund */
+.website-button {
+    display: inline-block;
+    margin: 10px;
+    padding: 10px;
+    background-color: #4CAF50;
     color: white;
-    border: none;
-    padding: 20px;
-    font-size: 16px;
-    cursor: pointer;
+    text-decoration: none;
     border-radius: 5px;
     transition: background-color 0.3s;
-    text-align: center;
 }
 
-.grid-button:hover {
-    background-color: #45a049; /* Hover-Effekt */
+.website-button:hover {
+    background-color: #45a049;
 }
+
+.button-container {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+}
+
