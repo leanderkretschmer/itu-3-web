@@ -1,5 +1,5 @@
 <?php
-include '../../db_connect.php';
+include 'db_connect.php';
 
 $notification = ""; // Variable für Benachrichtigungen
 
