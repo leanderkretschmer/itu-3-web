@@ -1,3 +1,6 @@
+
+
+<!-- Login Abfrage -->
 <?php
 session_start();
 
@@ -50,6 +53,8 @@ if (!in_array('viewer', $user_groups)) {
     die("Zugriff verweigert. Sie benötigen Viewer-Rechte. <br><br><a href='/home.php' style='padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>Zurück zur Startseite</a>");
 }
 ?>
+<!--------------------- Login Abfrage Ende -------------------->
+
 
 <!DOCTYPE html>
 <html lang="de">
