@@ -15,16 +15,26 @@ body {
     position: relative;
 }
 
-.logout-btn {
+.logout-container {
     position: absolute;
-    top: 10px;
-    right: 10px;
-    padding: 8px 12px;
+    top: 15px;
+    right: 15px;
+}
+
+.logout-btn {
     background-color: #808080; /* Grau */
     color: white;
-    text-decoration: none;
-    border-radius: 5px;
+    padding: 10px 15px;
+    border-radius: 5px; /* Abgerundete Ecken */
+    text-decoration: none; /* Entfernt Unterstreichung von Links */
+    margin: 15px 15px; /* Margin oben und rechts */
+    display: inline-block;
 }
+
+.logout-btn:hover {
+    background-color: #555; /* Dunkleres Grau beim Überfahren */
+}
+
 
 .startseite h1 {
     position: absolute;
