@@ -45,6 +45,30 @@ body {
     text-align: center;  /* Zentriert den Text */
 }
 
+#news-container {
+    position: fixed;        /* Feste Positionierung am Bildschirmrand */
+    bottom: 0;              /* Am unteren Rand */
+    left: 0;                /* Am linken Rand */
+    background-color: rgba(0, 0, 0, 0.7); /* Dunkler, transparenter Hintergrund */
+    color: white;           /* Weiße Schriftfarbe */
+    padding: 10px;          /* Innenabstand */
+    width: 300px;           /* Feste Breite */
+    overflow: hidden;       /* Verhindert, dass Inhalte überlaufen */
+    border-top-right-radius: 10px; /* Abgerundete Ecken oben rechts */
+    transition: all 0.5s ease; /* Sanfter Übergang für Änderungen */
+    z-index: 999;            /* Stelle sicher, dass es über anderen Inhalten liegt */
+}
+
+#news-content {
+    text-align: left;       /* Linksbündiger Text */
+    font-size: 14px;        /* Lesbare Schriftgröße */
+}
+
+#news-content p {
+    margin: 0;              /* Entfernt Standardabstände von Paragraphen */
+    line-height: 1.4;       /* Angenehme Zeilenhöhe */
+}
+
 #loading-screen {
     position: fixed;
     top: 0;
