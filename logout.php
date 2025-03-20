@@ -12,5 +12,5 @@ if (isset($_COOKIE['user_login'])) {
 }
 
 // Weiterleitung zur Login-Seite oder einer anderen Seite nach dem Logout
-header('Location: login');
+header('Location: login/index.php');
 exit;
