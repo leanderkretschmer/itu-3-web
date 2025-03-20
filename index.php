@@ -61,7 +61,7 @@ if (!in_array('viewer', $user_groups)) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Meine Themen-Seite</title>
+    <title>ITU-3</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
