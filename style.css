@@ -15,6 +15,17 @@ body {
     position: relative;
 }
 
+.logout-btn {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    padding: 8px 12px;
+    background-color: #808080; /* Grau */
+    color: white;
+    text-decoration: none;
+    border-radius: 5px;
+}
+
 .startseite h1 {
     position: absolute;
     top: 20px;
