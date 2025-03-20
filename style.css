@@ -201,3 +201,48 @@ body {
 .dropdown-content.show {
     display: block;
 }
+
+
+/* Container für die Buttons */
+.button-container {
+    display: grid;
+    grid-template-columns: repeat(10, 1fr); /* 10 Spalten */
+    grid-template-rows: repeat(6, 1fr); /* 6 Reihen */
+    gap: 10px; /* Abstand zwischen den Buttons */
+    width: 80%; /* Breite des Containers, kann angepasst werden */
+    max-width: 800px; /* Maximale Breite des Containers */
+    height: 80%; /* Höhe des Containers */
+    padding: 20px;
+    background-color: white;
+    border-radius: 10px; /* Abrundung der Ecken */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Leichter Schatten für den Container */
+}
+
+/* Gestaltung der Buttons */
+.grid-button {
+    background-color: #4CAF50; /* Hintergrundfarbe */
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+}
+
+.grid-button:hover {
+    background-color: #45a049; /* Hover-Effekt */
+}
+
+/* Optional: Responsiv für kleinere Bildschirme */
+@media (max-width: 768px) {
+    .button-container {
+        grid-template-columns: repeat(5, 1fr); /* 5 Spalten auf kleinen Bildschirmen */
+    }
+}
+
+@media (max-width: 480px) {
+    .button-container {
+        grid-template-columns: repeat(3, 1fr); /* 3 Spalten auf sehr kleinen Bildschirmen */
+    }
+}
