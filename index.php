@@ -100,6 +100,10 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         </main>
     </div>
     <?php } ?>
+
+    <!-- Logout Button -->
+    <br>
+    <a class="logout-btn" href="logout.php">Logout</a>
 </body>
 
 </html>
