@@ -119,17 +119,21 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     </div>
 
 
-    <div class="content">
-        <div class="button-container">
-            <!-- 10x6 Buttons -->
-            <?php
-            // 10x6 = 60 Buttons, also 60 Button-Elemente erstellen
-            for ($i = 1; $i <= 60; $i++) {
-                echo '<button class="grid-button">Button ' . $i . '</button>';
-            }
-            ?>
-        </div>
-    </div>
+<div class="button-container">
+    <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
+        <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj" alt="WebUntis Logo">
+    </a>
+
+    <a href="https://bkhaspel.de/" class="website-button">
+        <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png" alt="BKH Logo">
+        <span class="button-text">BKH</span>
+    </a>
+
+    <a href="https://bkb-europaschule.eu/" class="website-button">
+        <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png" alt="BKB Logo">
+        <span class="button-text">BKB</span>
+    </a>
+</div>
 
 
 
