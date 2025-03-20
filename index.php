@@ -1,4 +1,3 @@
-<!-- Login Abfrage -->
 <?php
 session_start();
 
@@ -50,17 +49,12 @@ $user_groups = explode(';', $user_groups);
 if (!in_array('viewer', $user_groups)) {
     die("Zugriff verweigert. Sie benötigen Viewer-Rechte. <br><br><a href='/home.php' style='padding: 10px 20px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 5px;'>Zurück zur Startseite</a>");
 }
-?>
-<!--------------------- Login Abfrage Ende -------------------->
 
-
-<?php
 $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
 ?>
 
 <!DOCTYPE html>
 <html lang="de">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -70,17 +64,15 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
 </head>
 
-
 <body>
     <div id="loading-screen">
         <div class="loader"></div>
     </div>
+
     <?php if ($seite == 'startseite') { ?>
     <div class="startseite">
         <h1>ITu-3</h1>
     </div>
-       
-
     <?php } else { ?>
     <div class="container">
     </div>
@@ -99,7 +91,7 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         </div>
     </div>
 
- <div class="button-container">
+    <div class="button-container">
         <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
             <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj"
                 alt="WebUntis Logo">
@@ -117,26 +109,6 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
             <span class="button-text">BKB</span>
         </a>
     </div>
-
-
-<div class="button-container">
-    <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
-        <img src="https://yt3.googleusercontent.com/ytc/AIdro_l2iq_MZUZ1HNv2iLiALhCdk0NX_lrVx8Kqk-UvRCsfLQ=s900-c-k-c0x00ffffff-no-rj" alt="WebUntis Logo">
-    </a>
-
-    <a href="https://bkhaspel.de/" class="website-button">
-        <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png" alt="BKH Logo">
-        <span class="button-text">BKH</span>
-    </a>
-
-    <a href="https://bkb-europaschule.eu/" class="website-button">
-        <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png" alt="BKB Logo">
-        <span class="button-text">BKB</span>
-    </a>
-</div>
-
-
-
 
     <script>
         window.addEventListener('load', function() {
@@ -167,6 +139,4 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         });
     </script>
 </body>
-
-
 </html>
