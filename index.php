@@ -71,16 +71,17 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
             <img src="https://gebhardschule-konstanz.de/wp-content/uploads/2022/06/RTEmagicC_webuntis.png.png"
                 alt="WebUntis Logo">
+            <span class="button-text">Untis</span>
         </a>
     
         <a href="https://bkhaspel.de/" class="website-button">
-            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
+            <img src="https://img.icons8.com/fluent-systems-filled/512/iserv.png"
                 alt="BKH Logo">
             <span class="button-text">BKH</span>
         </a>
     
         <a href="https://bkb-europaschule.eu/" class="website-button">
-            <img src="https://endoospot.de/wp-content/uploads/sites/1/2020/06/xIServ_Logo.png.pagespeed.ic.vihkecP0at.png"
+            <img src="https://img.icons8.com/fluent-systems-filled/512/iserv.png"
                 alt="BKB Logo">
             <span class="button-text">BKB</span>
         </a>
