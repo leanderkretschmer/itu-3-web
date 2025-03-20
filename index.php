@@ -55,11 +55,6 @@ if (!in_array('viewer', $user_groups)) {
 ?>
 <!--------------------- Login Abfrage Ende -------------------->
 
-
-<?php
-$seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
-?>
-
 <!DOCTYPE html>
 <html lang="de">
 
@@ -95,6 +90,9 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                     echo '<h1>Thema 3</h1><p>Inhalt von Thema 3...</p>';
                 } else {
                     echo '<h1>Willkommen!</h1><p>Wähle ein Thema aus der Seitenleiste.</p>';
+                    echo '<div class="stundenplan-container">';
+                    echo get_timetable_data();
+                    echo '</div>';
                 }
                 ?>
         </main>
@@ -108,5 +106,3 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
 
 </html>
 
-
-</html>
