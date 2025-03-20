@@ -2,7 +2,7 @@
 session_start();
 
 // Datenbankverbindung
-require_once 'db_connect.php';
+require_once '../db_connect.php';
 
 // Überprüfen, ob die Verbindung erfolgreich war
 if ($conn->connect_error) {
@@ -56,49 +56,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Login</title>
     <style>
-        /* Grundlegendes Styling für den Hacker-Look */
+        /* Grundlegendes Styling für das Schul-Theme */
         body {
-            background-color: #1e1e1e;
-            color: #33FF00; /* Grüne Schrift für den "Hacker"-Look */
-            font-family: 'Courier New', monospace; /* Monospaced Schriftart */
+            background-color: #f0f8ff; /* Helles Blau für den Hintergrund */
+            color: #333; /* Dunkle Schriftfarbe */
+            font-family: 'Arial', sans-serif; /* Sans-serif Schriftart */
             font-size: 18px;
             text-align: center;
             margin: 0;
             padding: 0;
-            overflow: hidden;
         }
 
         h1 {
             margin-top: 50px;
             font-size: 36px;
+            color: #2c3e50; /* Dunkelblau für die Überschrift */
         }
 
         .login-container {
-            width: 100vh;
-            margin-top: 50px;
-            display: inline-block;
-            text-align: left;
+            width: 400px; /* Feste Breite für das Container */
+            margin: 50px auto; /* Zentrieren */
             padding: 20px;
-            background-color: #2c2c2c;
+            background-color: #ffffff; /* Weißer Hintergrund für das Formular */
             border-radius: 10px;
-            box-shadow: 0 0 15px rgba(0, 0, 0, 0.7);
+            box-shadow: 0 0 15px rgba(0, 0, 0, 0.2);
         }
 
         .login-container label {
             display: block;
             margin-bottom: 10px;
+            font-weight: bold; /* Fettdruck für Labels */
         }
 
         .login-container input[type="text"],
         .login-container input[type="password"] {
-            width: 98%;
+            width: 100%; /* Volle Breite */
             padding: 12px;
-            background-color: #1a1a1a;
-            color: #33FF00;
-            border: 1px solid #33FF00;
+            background-color: #ecf0f1; /* Helles Grau für Eingabefelder */
+            color: #333;
+            border: 1px solid #bdc3c7; /* Graue Umrandung */
             border-radius: 5px;
             margin-bottom: 10px;
-            font-size: 18px;
+            font-size: 16px;
         }
 
         .login-container input[type="checkbox"] {
@@ -106,8 +105,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .login-container button {
-            background-color: #33FF00;
-            color: #1e1e1e;
+            background-color: #3498db; /* Blau für den Button */
+            color: #ffffff; /* Weiße Schriftfarbe */
             padding: 12px 20px;
             border: none;
             border-radius: 5px;
@@ -117,7 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
 
         .login-container button:hover {
-            background-color: #29cc00;
+            background-color: #2980b9; /* Dunkleres Blau beim Hover */
         }
 
         .error-message {
@@ -129,57 +128,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             margin-top: 20px;
             font-size: 16px;
         }
-
-        /* Animationen für ein echtes "Hacker"-Feeling */
-        .blinking-cursor {
-            font-size: 24px;
-            font-weight: bold;
-            animation: blink-caret 0.8s step-end infinite;
-        }
-
-        @keyframes blink-caret {
-            50% {
-                border-color: transparent;
-            }
-        }
-
-        /* Hintergrund-Code-Effekt */
-        .background-code {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            color: #33FF00;
-            font-family: 'Courier New', monospace;
-            font-size: 16px;
-            white-space: nowrap;
-            z-index: -1; /* Hintergrund */
-            overflow: hidden;
-            pointer-events: none;
-        }
-
-        .code-line {
-            position: absolute;
-            animation: code-scroll 3s infinite linear;
-            opacity: 0;
-        }
-
-        @keyframes code-scroll {
-            0% {
-                top: -20px;
-                opacity: 1;
-            }
-            100% {
-                top: 100%;
-                opacity: 0;
-            }
-        }
-
     </style>
 </head>
 <body>
-    <h1>Willkommen beim Login Terminal</h1>
+    <h1>Willkommen beim Schul-Login</h1>
 
     <?php if (isset($error_message)): ?>
         <p class="error-message"><?= htmlspecialchars($error_message) ?></p>
@@ -199,44 +151,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             <button type="submit">Einloggen</button>
         </form>
     </div>
-
-    <!-- Hintergrund-Code -->
-    <div class="background-code" id="background-code"></div>
-
-    <script>
-        // Beispiel für den simulierten Code, der durch das Terminal läuft
-        const codeLines = [
-            "Initializing system...",
-            "Connection established...",
-            "Loading files...",
-            "System compromised!",
-            "Access granted.",
-            "Verifying credentials...",
-            "Login successful!",
-            "Updating security protocols...",
-            "Security breach detected!",
-            "Shutdown imminent..."
-        ];
-
-        function generateCodeLine() {
-            const line = codeLines[Math.floor(Math.random() * codeLines.length)];
-            const codeLine = document.createElement("div");
-            codeLine.className = "code-line";
-            codeLine.textContent = line;
-            document.getElementById("background-code").appendChild(codeLine);
-
-            // Setze eine zufällige Animation-Dauer
-            const duration = Math.random() * 4 + 2; // zufällige Dauer zwischen 2 und 6 Sekunden
-            codeLine.style.animationDuration = `${duration}s`;
-
-            // Entferne die Codezeile nach der Animation
-            setTimeout(() => {
-                codeLine.remove();
-            }, duration * 1000);
-        }
-
-        // Erstelle alle 300ms neue Codezeilen
-        setInterval(generateCodeLine, 300);
-    </script>
 </body>
 </html>
