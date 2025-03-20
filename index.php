@@ -68,39 +68,45 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     <div class="startseite">
         <h1>ITu-3</h1>
 <div class="button-container">
-        <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
+        <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button" target="_blank">
             <img src="https://www.untis.at/fileadmin/user_upload/Icon-1024x1024_rund.png"
                 alt="WebUntis Logo">
             <span class="button-text">Untis</span>
         </a>
     
-        <a href="https://bkhaspel.de/" class="website-button" target="_blank">
+        <a href="https://bkhaspel.de/" class="website-button" target="_blank" 
+            rel="noopener noreferrer">
             <img src="https://img.icons8.com/fluent-systems-filled/512/iserv.png"
                 alt="BKH Logo">
             <span class="button-text">BKH</span>
         </a>
     
-        <a href="https://bkb-europaschule.eu/" class="website-button" target="_blank">
+        <a href="https://bkb-europaschule.eu/" class="website-button" target="_blank"
+            rel="noopener noreferrer">
             <img src="https://img.icons8.com/fluent-systems-filled/512/iserv.png"
                 alt="BKB Logo">
             <span class="button-text">BKB</span>
         </a>
-        <a href="https://bkb-europaschule.eu/" class="website-button" target="_blank">
+        <a href="https://bkb-europaschule.eu/" class="website-button" target="_blank"
+            rel="noopener noreferrer">
             <img src="https://th.bing.com/th/id/R.697057d80dd892e17d17f89c0aa8be45?rik=iJ1M0IXdhTjJBA&pid=ImgRaw&r=0"
                 alt="BKB Logo">
             <span class="button-text">Classbook</span>
         </a>
-        <a href="https://www.gesetze-im-internet.de/bgb/" class="website-button" target="_blank">
+        <a href="https://www.gesetze-im-internet.de/bgb/" class="website-button" target="_blank"
+            rel="noopener noreferrer">
             <img src="https://www.kerstin-celina.de/wp-content/uploads/2021/04/gesetzbuch.png"
                 alt="BGB Logo">
             <span class="button-text">BGB</span>
         </a>
-        <a href="https://www.gesetze-im-internet.de/gwb/" class="website-button" target="_blank">
+        <a href="https://www.gesetze-im-internet.de/gwb/" class="website-button" target="_blank"
+            rel="noopener noreferrer">
             <img src="https://www.kerstin-celina.de/wp-content/uploads/2021/04/gesetzbuch.png"
                 alt="GWB Logo">
             <span class="button-text">GWB</span>
         </a>
-        <a href="https://dotnetfiddle.net/" class="website-button" target="_blank">
+        <a href="https://dotnetfiddle.net/" class="website-button" target="_blank"
+            rel="noopener noreferrer">
             <img src="https://upload.wikimedia.org/wikipedia/commons/0/0e/Microsoft_.NET_logo.png"
                 alt="GWB Logo">
             <span class="button-text">C# Web</span>
