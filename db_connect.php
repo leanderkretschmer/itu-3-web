@@ -1,4 +1,3 @@
-
 <?php
 $host = 'servercampus.xyz';
 $dbname = 's7_itu3';
