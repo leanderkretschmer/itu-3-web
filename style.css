@@ -159,7 +159,7 @@ body {
     background-color: #4CAF50; /* Grüner Hintergrund */
     color: white; /* Weiße Schrift */
     border: none;
-    padding: 20px 20px;
+    padding: 10px 10px;
     border-radius: 50%; /* Rundes Design */
     font-size: 20px; /* Größe des Icons */
     cursor: pointer;
