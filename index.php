@@ -105,13 +105,17 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
     </div>
     <?php } ?>
 
-    <!-- Benutzer-Button oben rechts -->
+    <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
     <div class="user-menu">
-        <a href="logout.php">
-            <button class="user-button">
-                <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
-            </button>
-        </a>
+        <button class="user-button">
+            <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
+        </button>
+        <!-- Dropdown-Menü -->
+        <div class="dropdown-content">
+            <a href="profile.php">Profil</a>
+            <a href="settings.php">Einstellungen</a>
+            <a href="logout.php">Ausloggen</a>
+        </div>
     </div>
 
     <script>
@@ -122,17 +126,23 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
                 loadingScreen.style.display = 'none';
             }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
         });
+
+        // Dropdown anzeigen/verstecken
+        document.querySelector('.user-button').addEventListener('click', function() {
+            const dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.classList.toggle('show');
+        });
+
+        // Schließe Dropdown, wenn außerhalb geklickt wird
+        window.addEventListener('click', function(event) {
+            if (!event.target.matches('.user-button') && !event.target.matches('.dropdown-content') && !event.target.matches('.dropdown-content a')) {
+                const dropdownContent = document.querySelector('.dropdown-content');
+                if (dropdownContent.classList.contains('show')) {
+                    dropdownContent.classList.remove('show');
+                }
+            }
+        });
     </script>
 </body>
 
-
-<script>
-window.addEventListener('load', function() {
-    const loadingScreen = document.getElementById('loading-screen');
-    loadingScreen.classList.add('fade-out');
-    setTimeout(function() {
-        loadingScreen.style.display = 'none';
-    }, 500); // Wartezeit muss mit der CSS Transition übereinstimmen
-});
-</script>
 </html>
