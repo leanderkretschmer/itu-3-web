@@ -69,7 +69,7 @@ $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
         <h1>ITu-3</h1>
 <div class="button-container">
         <a href="https://perseus.webuntis.com/WebUntis/#/basic/login" class="website-button">
-            <img src="https://gebhardschule-konstanz.de/wp-content/uploads/2022/06/RTEmagicC_webuntis.png.png"
+            <img src="https://www.untis.at/fileadmin/user_upload/Icon-1024x1024_rund.png"
                 alt="WebUntis Logo">
             <span class="button-text">Untis</span>
         </a>
