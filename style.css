@@ -168,3 +168,29 @@ body {
     font-size: 2em;
     margin-bottom: 20px;
 }
+
+/* user-menu für das Benutzermenü oben rechts */
+.user-menu {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000; /* sorgt dafür, dass der Button immer oben bleibt */
+}
+
+.user-button {
+    background-color: #4CAF50; /* Grüner Hintergrund */
+    color: white; /* Weiße Schrift */
+    border: none;
+    padding: 10px 20px;
+    border-radius: 50%; /* Rundes Design */
+    font-size: 20px; /* Größe des Icons */
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-button i {
+    margin-right: 0px;
+}
+
