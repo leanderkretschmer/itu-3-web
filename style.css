@@ -24,12 +24,13 @@ body {
     background-color: #d3d3d3;
     border-radius: 15px;
     text-decoration: none;
-    transition: background-color 0.3s ease;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Hinzugefügt: sanfter Zoom-Effekt */
     color: #000; /* Standardfarbe für den Text */
 }
 
 .website-button:hover {
     background-color: #a9a9a9;
+    transform: scale(1.05); /* Vergrößern des Buttons bei Hover */
 }
 
 .website-button img {
@@ -91,36 +92,6 @@ body {
     font-size: 3em;
     position: relative;
 }
-
-.dropdown-content {
-    display: none;
-    position: absolute;
-    background-color: #f9f9f9;
-    min-width: 120px;
-    box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
-    z-index: 1;
-    right: 0;
-    border-radius: 5px;
-    overflow: hidden;
-}
-
-.dropdown-content a {
-    color: black;
-    padding: 12px 16px;
-    text-decoration: none;
-    display: block;
-    text-align: left;
-}
-
-.dropdown-content a:hover {
-    background-color: #ddd;
-}
-
-/* JavaScript Klasse, um das Dropdown anzuzeigen */
-.show {
-    display: block;
-}
-
 
 .startseite h1 {
     position: absolute;
@@ -240,25 +211,15 @@ body {
     display: block;
 }
 
-.website-button {
-    display: inline-block;
-    margin: 10px;
-    padding: 10px;
-    background-color: #4CAF50;
-    color: white;
-    text-decoration: none;
-    border-radius: 5px;
-    transition: background-color 0.3s;
-}
+/* Responsives Design für kleinere Bildschirme */
+@media screen and (max-width: 768px) {
+    .button-container {
+        flex-direction: column;
+        gap: 15px; /* Weniger Abstand auf kleinen Bildschirmen */
+    }
 
-.website-button:hover {
-    background-color: #45a049;
+    .website-button {
+        width: 120px;
+        height: 120px;
+    }
 }
-
-.button-container {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 20px;
-}
-
