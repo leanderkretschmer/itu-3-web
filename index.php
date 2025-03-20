@@ -51,9 +51,34 @@ if (!in_array('viewer', $user_groups)) {
 }
 ?>
 
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <title>Viewer-Bereich</title>
+    <style>
+        .logout-btn {
+            display: inline-block;
+            padding: 10px 20px;
+            margin-top: 20px;
+            background-color: #d9534f;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .logout-btn:hover {
+            background-color: #c9302c;
+        }
+    </style>
+</head>
+<body>
+    <?php
+    // Ausgabe des aktuellen Datums und der Uhrzeit
+    echo "Current date and time: " . date("Y-m-d H:i:s");
+    ?>
 
-
-<?php
-// Output current date and time
-echo "Current date and time: " . date("Y-m-d H:i:s");
-?>
+    <!-- Logout Button -->
+    <br>
+    <a class="logout-btn" href="logout.php">Logout</a>
+</body>
+</html>
