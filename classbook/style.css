@@ -3,17 +3,25 @@ body {
   font-family: sans-serif;
   margin: 0;
   padding: 0;
-  overflow: auto;
+  overflow: hidden; /* Verhindert ungewolltes Scrollen */
   height: 100%;
+  background-color: #d3d3d3; /* Helles Grau als Hintergrund */
 }
 
-/* Seitenleiste (Sidebar) – schmaler und mit Drop‑Shadow */
+/* Container für Seitenleiste und Inhalt */
+.container {
+  display: flex;
+  height: 100%;
+  width: 100%;
+}
+
+/* Linke Sidebar: 200px breit, grauer Hintergrund, mit Drop‑Shadow */
 .sidebar {
-  width: 200px; /* schmalere Breite */
-  background-color: #f6f8fa;
+  width: 200px;
+  background-color: #d3d3d3; /* Einheitliches Grau */
   padding: 20px;
-  border-right: 1px solid #d0d7de;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+  overflow-y: auto;
 }
 
 .sidebar h2 {
@@ -39,7 +47,7 @@ body {
   display: block;
   padding: 8px 12px;
   text-decoration: none;
-  color: #0969da;
+  color: #24292e;
   border-radius: 6px;
   transition: background-color 0.3s ease;
 }
@@ -48,7 +56,7 @@ body {
   background-color: rgba(0, 0, 0, 0.08);
 }
 
-/* Kommentar‑Button in der Sidebar – erscheint beim Hover */
+/* Falls ein Kommentar-Button (kleiner Button, der nur bei Hover erscheint) benötigt wird */
 .sidebar .comment-btn {
   display: none;
   position: absolute;
@@ -68,34 +76,46 @@ body {
   display: block;
 }
 
-/* Hauptinhalt (Wiki‑Einträge) – sorgt für ausreichende Abstände */
+/* Hauptinhalt – jeweils mit etwas Abstand von der Sidebar und am rechten Rand */
 .content {
   flex: 1;
+  background-color: #fff;
   padding: 20px;
-  margin-left: 20px;
+  margin-left: 20px; /* Abstand zur Sidebar */
   margin-right: 20px;
+  overflow-y: auto;
 }
 
-/* Stil für einzelne Wiki‑Einträge */
+/* Überschriften im Inhalt */
+.content h1 {
+  color: #24292e;
+  font-size: 2em;
+  margin-bottom: 20px;
+}
+
+/* Stil für einzelne Wiki‑Einträge (Wenn du später einzelne Einträge auch visuell abtrennen möchtest) */
 .wiki-entry {
   background: #fff;
   border: 1px solid #d0d7de;
   border-radius: 6px;
   padding: 15px;
   margin-bottom: 20px;
-  position: relative;
 }
 
-/* Optional: Abstand zwischen den Wiki‑Einträgen */
-.wiki-entry:not(:first-child) {
-  margin-top: 10px;
-}
-
-/* Modal (neuer Eintrag) – standardmäßig ausgeblendet */
+/* Modal, z. B. für den "Eintrag"-Button */
 .modal {
   display: none;
   opacity: 0;
   transition: opacity 0.3s ease;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
 }
 
 .modal.active {
@@ -103,7 +123,7 @@ body {
   opacity: 1;
 }
 
-/* Modal-Container (das weiße Feld) */
+/* Modal-Inhalt */
 .modal .modal-content {
   background-color: #fff;
   padding: 20px;
@@ -112,7 +132,7 @@ body {
   max-width: 600px;
 }
 
-/* Fixierter „Eintrag“ Button unten rechts */
+/* Fixierter "Eintrag"-Button unten rechts */
 #openEntryButton {
   position: fixed;
   bottom: 20px;
@@ -126,60 +146,6 @@ body {
   cursor: pointer;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
   font-size: 14px;
-}
-
-/* Kommentarblock innerhalb eines Wiki‑Eintrags */
-.comment-block {
-  margin-top: 15px;
-  border-top: 1px solid #d0d7de;
-  padding-top: 10px;
-}
-
-/* Einzelner Kommentar – Anzeige des User Icons und Text */
-.comment {
-  display: flex;
-  align-items: flex-start;
-  margin-bottom: 10px;
-}
-
-.comment .user-icon {
-  width: 30px;
-  height: 30px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 10px;
-}
-
-.comment .user-icon img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.comment .comment-content {
-  background: #f1f3f5;
-  padding: 8px 12px;
-  border-radius: 6px;
-  position: relative;
-}
-
-/* Beim Hover über einen Kommentar – Anzeige des ausgewählten (markierten) Inhalts */
-.comment .comment-content:hover::after {
-  content: attr(data-selected);
-  position: absolute;
-  top: -40px;
-  left: 0;
-  background: #fffa;
-  padding: 5px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  white-space: pre-wrap;
-  z-index: 10;
-}
-
-/* Markierung von ausgewähltem Text */
-.selected-text {
-  background: #ffff99;
 }
 
 /* Responsive Anpassungen */
