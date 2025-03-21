@@ -18,7 +18,7 @@ body {
 /* Linke Sidebar: 200px breit, grauer Hintergrund, mit Drop‑Shadow */
 .sidebar {
   width: 200px;
-  background-color: #d3d3d3; /* Einheitliches Grau */
+  background-color: #24292e; /* Einheitliches Grau */
   padding: 20px;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
