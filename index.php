@@ -51,6 +51,22 @@ if (!in_array('viewer', $user_groups)) {
 }
 
 $seite = isset($_GET['seite']) ? $_GET['seite'] : 'startseite';
+
+
+// Abrufen des Avatars aus der Datenbank
+$query = "SELECT avatar FROM users WHERE id = ?";
+$stmt = $conn->prepare($query);
+$stmt->bind_param('i', $user_id);
+$stmt->execute();
+$stmt->bind_result($avatar);
+$stmt->fetch();
+$stmt->close();
+
+// Standardbild, falls kein Avatar gesetzt ist
+if (empty($avatar)) {
+    $avatar = 'default-avatar.png'; // Pfad zum Standardbild
+}
+
 ?>
 
 <!DOCTYPE html>
