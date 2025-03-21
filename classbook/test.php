@@ -29,10 +29,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['act
 
 /*
 Funktion: processWikiEntry()
-Parst den übergebenen Markdown-Text zeilenweise. Jede Zeile,
-die mit (“#+”) beginnt, markiert einen neuen Titel auf einem bestimmten
-Hierarchielevel – alle folgenden Zeilen ohne führende Hashtags werden als
-Inhalt dieses Eintrags interpretiert.
+Parst den übergebenen Markdown-Text zeilenweise. Jede Zeile, die mit (“#+”) beginnt,
+markiert einen neuen Titel auf einem bestimmten Hierarchielevel – alle folgenden Zeilen ohne
+führende Hashtags werden als Inhalt dieses Eintrags interpretiert.
 Zur Speicherung greifen wir auf die Tabelle wiki_entries zu.
 */
 function processWikiEntry($conn, $markdown) {
@@ -65,14 +64,11 @@ function processWikiEntry($conn, $markdown) {
         $entries[] = $currentEntry;
     }
 
-    // Jetzt werden die Einträge verarbeitet – unter Beachtung von Eltern-Kind-Beziehungen.
-    // Hier speichern wir den zuletzt eingefügten Eintrag für jedes Level, um
-    // so den parent_id zu bestimmen.
+    // Nun werden die Einträge unter Beachtung von Eltern-Kind-Beziehungen verarbeitet.
     $lastEntryOfLevel = [];
-
     foreach ($entries as $entry) {
-        $level = $entry["level"];
-        $title = $entry["title"];
+        $level   = $entry["level"];
+        $title   = $entry["title"];
         $content = trim($entry["content"]);
 
         // Bestimme die parent_id (bei Level 1: kein Parent)
@@ -81,24 +77,21 @@ function processWikiEntry($conn, $markdown) {
             $parent_id = $lastEntryOfLevel[$level - 1];
         }
 
-        // Prüfe, ob bereits ein Eintrag mit gleichem Titel, Level und
-        // (falls vorhanden) gleicher parent_id existiert.
+        // Prüfe, ob bereits ein Eintrag existiert.
         if ($parent_id === null) {
-            $stmt = $conn->prepare(
-                "SELECT id FROM wiki_entries WHERE title = ? AND level = ? AND parent_id IS NULL"
-            );
+            $stmt = $conn->prepare("SELECT id FROM wiki_entries 
+                                    WHERE title = ? AND level = ? AND parent_id IS NULL");
             $stmt->bind_param("si", $title, $level);
         } else {
-            $stmt = $conn->prepare(
-                "SELECT id FROM wiki_entries WHERE title = ? AND level = ? AND parent_id = ?"
-            );
+            $stmt = $conn->prepare("SELECT id FROM wiki_entries 
+                                    WHERE title = ? AND level = ? AND parent_id = ?");
             $stmt->bind_param("sii", $title, $level, $parent_id);
         }
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            // Der Eintrag existiert bereits – ergänze den Inhalt.
+            // Eintrag existiert bereits – ergänze den Inhalt.
             $entry_id = $row["id"];
             $stmtUpdate = $conn->prepare(
                 "UPDATE wiki_entries SET content = CONCAT(content, ?) WHERE id = ?"
@@ -107,15 +100,17 @@ function processWikiEntry($conn, $markdown) {
             $stmtUpdate->bind_param("si", $additional, $entry_id);
             $stmtUpdate->execute();
         } else {
-            // Neuer Eintrag: In der Tabelle speichern.
+            // Neuer Eintrag: Speichern in der Tabelle.
             if ($parent_id === null) {
                 $stmtInsert = $conn->prepare(
-                    "INSERT INTO wiki_entries (parent_id, level, title, content) VALUES (NULL, ?, ?, ?)"
+                    "INSERT INTO wiki_entries (parent_id, level, title, content) 
+                     VALUES (NULL, ?, ?, ?)"
                 );
                 $stmtInsert->bind_param("iss", $level, $title, $content);
             } else {
                 $stmtInsert = $conn->prepare(
-                    "INSERT INTO wiki_entries (parent_id, level, title, content) VALUES (?, ?, ?, ?)"
+                    "INSERT INTO wiki_entries (parent_id, level, title, content) 
+                     VALUES (?, ?, ?, ?)"
                 );
                 $stmtInsert->bind_param("iiss", $parent_id, $level, $title, $content);
             }
@@ -135,9 +130,8 @@ function processWikiEntry($conn, $markdown) {
 
 /*
 Funktion: getWikiEntries()
-Liest alle Wiki-Einträge aus der Tabelle aus und baut daraus eine hierarchische
-Struktur (Eltern-Kind-Beziehungen). Die Einträge werden anschliessend
-alphabetisch sortiert (auf jeder Ebene).
+Liest alle Wiki-Einträge aus der Tabelle und baut eine hierarchische Struktur (Eltern-Kind-Beziehungen);
+die Einträge werden alphabetisch sortiert (auf jeder Ebene).
 */
 function getWikiEntries($conn) {
     $query = "SELECT id, parent_id, level, title, content FROM wiki_entries";
@@ -146,7 +140,7 @@ function getWikiEntries($conn) {
     while ($row = $result->fetch_assoc()) {
         $entries[] = $row;
     }
-    // Erstelle einen Index, um die Hierarchie aufzubauen.
+    // Hier wird eine Baumstruktur anhand der Parent-Beziehungen aufgebaut.
     $tree = [];
     $byId = [];
     foreach ($entries as $entry) {
@@ -160,7 +154,7 @@ function getWikiEntries($conn) {
             $tree[] = &$entry;
         }
     }
-    // Rekursive Sortierung: alphabetisch nach Titel (auf jeder Ebene)
+    // Rekursive sortierung: alphabetisch nach Titel (auf jeder Ebene)
     function sortEntries(&$entries) {
         usort($entries, function ($a, $b) {
             return strcmp($a['title'], $b['title']);
@@ -182,66 +176,36 @@ function getWikiEntries($conn) {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wiki OnePager</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    /* Optional: Stil für das Modal */
-    .modal {
-      display: none;
-    }
-    .modal.active {
-      display: block;
-    }
-  </style>
+  <!-- Externe CSS-Datei einbinden -->
+  <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
-<body class="bg-gray-100">
-  <div class="flex min-h-screen">
-    <!-- Seitenleiste -->
-    <div class="w-1/4 bg-white p-4 overflow-y-auto border-r">
-      <h2 class="text-lg font-bold mb-4">Wiki Übersicht</h2>
-      <ul id="wikiList" class="space-y-2">
-        <!-- Wiki-Einträge werden hier dynamisch via JS geladen -->
+<body>
+  <div class="container">
+    <!-- Linke Seitenleiste -->
+    <div class="sidebar">
+      <h2>Wiki Übersicht</h2>
+      <ul id="wikiList">
+        <!-- Wiki-Einträge werden hier per JavaScript geladen -->
       </ul>
     </div>
-    <!-- Hauptinhalt -->
-    <div class="flex-1 p-6">
-      <h1 class="text-2xl font-bold" id="contentTitle">Willkommen im Wiki</h1>
-      <div id="contentArea" class="mt-4 text-gray-700"></div>
+    <!-- Hauptbereich -->
+    <div class="content">
+      <h1 id="contentTitle">Willkommen im Wiki</h1>
+      <div id="contentArea"></div>
     </div>
   </div>
 
   <!-- Fixierter Button "Eintrag" unten rechts -->
-  <button
-    id="openEntryButton"
-    class="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg"
-  >
-    Eintrag
-  </button>
+  <button id="openEntryButton">Eintrag</button>
 
   <!-- Modal für den Markdown-Eintrag -->
-  <div
-    id="entryModal"
-    class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
-  >
-    <div class="bg-white p-6 rounded shadow-lg w-11/12 max-w-lg relative">
-      <h2 class="text-xl font-bold mb-4">Neuer Wiki Eintrag</h2>
-      <textarea
-        id="markdownInput"
-        class="w-full h-48 p-2 border rounded"
-        placeholder="Gib deinen Markdown Text ein..."
-      ></textarea>
-      <div class="mt-4 flex justify-end space-x-2">
-        <button
-          id="closeModalButton"
-          class="px-4 py-2 bg-gray-300 rounded"
-        >
-          Schließen
-        </button>
-        <button
-          id="saveEntryButton"
-          class="px-4 py-2 bg-green-500 text-white rounded"
-        >
-          Speichern
-        </button>
+  <div id="entryModal" class="modal">
+    <div class="modal-content">
+      <h2>Neuer Wiki Eintrag</h2>
+      <textarea id="markdownInput" placeholder="Gib deinen Markdown Text ein..."></textarea>
+      <div>
+        <button id="closeModalButton">Schließen</button>
+        <button id="saveEntryButton">Speichern</button>
       </div>
     </div>
   </div>
@@ -264,8 +228,7 @@ function getWikiEntries($conn) {
       });
 
       saveEntryButton.addEventListener("click", () => {
-        const markdown =
-          document.getElementById("markdownInput").value;
+        const markdown = document.getElementById("markdownInput").value;
         if (markdown.trim() === "") {
           alert("Bitte einen Eintrag eingeben.");
           return;
@@ -274,44 +237,37 @@ function getWikiEntries($conn) {
         fetch("<?php echo $_SERVER['PHP_SELF']; ?>", {
           method: "POST",
           headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded;charset=UTF-8"
+            "Content-Type": "application/x-www-form-urlencoded;charset=UTF-8"
           },
           body: "eintrag_md=" + encodeURIComponent(markdown)
         })
-          .then((response) => response.json())
-          .then((data) => {
+          .then(response => response.json())
+          .then(data => {
             alert(data.message);
             document.getElementById("markdownInput").value = "";
             entryModal.classList.remove("active");
             loadWikiEntries();
           })
-          .catch((error) => {
-            console.error("Fehler beim Speichern des Eintrags:", error);
-          });
+          .catch(error => console.error("Fehler beim Speichern des Eintrags:", error));
       });
     });
 
-    // Lädt alle Wiki-Einträge via AJAX, baut die Sidebar auf
+    // Wiki-Einträge in der Sidebar laden
     function loadWikiEntries() {
       fetch("<?php echo $_SERVER['PHP_SELF']; ?>?action=getWiki")
-        .then((response) => response.json())
-        .then((data) => {
+        .then(response => response.json())
+        .then(data => {
           const wikiList = document.getElementById("wikiList");
           wikiList.innerHTML = "";
           // Rekursive Funktion zum Rendern der Einträge (mit Einrückung je nach Level)
           function renderEntries(entries, container) {
-            entries.forEach((entry) => {
+            entries.forEach(entry => {
               const li = document.createElement("li");
-              li.style.marginLeft =
-                (entry.level - 1) * 20 + "px";
+              li.style.marginLeft = (entry.level - 1) * 20 + "px";
               const button = document.createElement("button");
-              button.className =
-                "w-full text-left font-semibold hover:underline";
+              button.className = "w-full text-left font-semibold hover:underline";
               button.textContent = entry.title;
-              button.addEventListener("click", () =>
-                loadContent(entry)
-              );
+              button.addEventListener("click", () => loadContent(entry));
               li.appendChild(button);
               container.appendChild(li);
               if (entry.children && entry.children.length > 0) {
@@ -321,17 +277,13 @@ function getWikiEntries($conn) {
           }
           renderEntries(data, wikiList);
         })
-        .catch((error) =>
-          console.error("Fehler beim Laden der Wiki Einträge:", error)
-        );
+        .catch(error => console.error("Fehler beim Laden der Wiki Einträge:", error));
     }
 
-    // Lädt den Inhalt eines Eintrags in den Hauptbereich
+    // Inhalt eines Wiki-Eintrags laden und im Hauptbereich anzeigen
     function loadContent(entry) {
-      document.getElementById("contentTitle").textContent =
-        entry.title;
-      document.getElementById("contentArea").textContent =
-        entry.content;
+      document.getElementById("contentTitle").textContent = entry.title;
+      document.getElementById("contentArea").textContent = entry.content;
     }
   </script>
 </body>
