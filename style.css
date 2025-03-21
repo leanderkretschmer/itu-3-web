@@ -194,9 +194,15 @@ body {
     border-radius: 50%;
     background-size: cover;
     background-position: center;
+    background-repeat: no-repeat;
     border: none;
     cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden; /* Stellt sicher, dass das Bild innerhalb des Kreises bleibt */
 }
+
 
 .user-button i {
     margin-right: 0px;
