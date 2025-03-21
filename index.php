@@ -138,6 +138,7 @@ if (empty($avatar)) {
 </button>
 
 
+
     <!-- Dropdown-Menü -->
     <div class="dropdown-content">
         <a href="profile.php">Profil</a>
