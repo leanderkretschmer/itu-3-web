@@ -132,17 +132,16 @@ if (empty($avatar)) {
 
 
     <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
-    <div class="user-menu">
-        <button class="user-button">
-            <i class="fas fa-user"></i> <!-- Benutzer-Icon von Font Awesome -->
-        </button>
-        <!-- Dropdown-Menü -->
-        <div class="dropdown-content">
-            <a href="profile.php">Profil</a>
-            <a href="settings.php">Einstellungen</a>
-            <a href="logout.php">Ausloggen</a>
-        </div>
+<div class="user-menu">
+    <button class="user-button" style="background-image: url('<?php echo htmlspecialchars($avatar); ?>');">
+    </button>
+    <!-- Dropdown-Menü -->
+    <div class="dropdown-content">
+        <a href="profile.php">Profil</a>
+        <a href="settings.php">Einstellungen</a>
+        <a href="logout.php">Ausloggen</a>
     </div>
+</div>
 
     <script>
         window.addEventListener('load', function() {
