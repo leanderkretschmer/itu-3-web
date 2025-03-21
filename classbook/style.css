@@ -31,23 +31,23 @@ body {
 /* Container für Sidebar und Hauptinhalt */
 .container {
   display: flex;
-  height: calc(100% - 80px); /* Abzüglich Header-Höhe (hier ca. 80px, anpassen wenn nötig) */
+  height: calc(100% - 80px); /* Header-Höhe abziehen, z. B. 80px */
   width: 100%;
   margin-top: 80px; /* Platz für den Header */
 }
 
-/* Linke Sidebar */
+/* Linke Sidebar: 260px breit, in einem dunkleren Grau */
 .sidebar {
-  width: 220px; /* Erhöhte Breite */
+  width: 260px; /* Breiter als zuvor */
   height: 100vh; /* Volle Höhe des Viewports */
-  background-color: #3b4048; /* Etwas helleres Grau */
+  background-color: #3b4048; /* Dunkles, aber etwas helleres Grau als der Body */
   padding: 20px;
   box-sizing: border-box;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
   overflow-y: auto;
 }
 
-/* Falls in der Sidebar Überschriften genutzt werden */
+/* Wenn Überschriften in der Sidebar genutzt werden */
 .sidebar h2 {
   margin-top: 0;
   color: #fff;
@@ -71,7 +71,7 @@ body {
   display: block;
   padding: 8px 12px;
   text-decoration: none;
-  color: #fff; /* Weißer Text für Links */
+  color: #fff; /* Weißer Text */
   border-radius: 6px;
   transition: background-color 0.3s ease;
 }
@@ -80,7 +80,7 @@ body {
   background-color: rgba(255, 255, 255, 0.1);
 }
 
-/* Kommentar-Button (falls benötigt) */
+/* Kommentar-Button in der Sidebar (falls benötigt) */
 .sidebar .comment-btn {
   display: none;
   position: absolute;
@@ -100,10 +100,10 @@ body {
   display: block;
 }
 
-/* Hauptinhalt */
+/* Hauptinhalt – Content-Bereich in einem helleren Grau */
 .content {
   flex: 1;
-  background-color: #fff;
+  background-color: #4a4f57; /* Helleres Grau als Sidebar */
   padding: 20px;
   margin-left: 20px; /* Abstand zur Sidebar */
   margin-right: 20px;
@@ -111,9 +111,19 @@ body {
   box-sizing: border-box;
 }
 
-/* Stil für einzelne Wiki-Einträge */
+/* Überschrift im Content-Bereich (z. B. für Detailansichten) */
+.content h1 {
+  color: #fff;             /* Weißer Text */
+  font-size: 2em;
+  font-weight: bold;
+  text-align: center;
+  margin-top: 20px;
+  margin-bottom: 20px;
+}
+
+/* Optional: Stil für einzelne Wiki-Einträge */
 .wiki-entry {
-  background: #fff;
+  background: #4a4f57;
   border: 1px solid #d0d7de;
   border-radius: 6px;
   padding: 15px;
@@ -169,7 +179,7 @@ body {
 /* Responsive Anpassungen */
 @media screen and (max-width: 768px) {
   .sidebar {
-    width: 180px;
+    width: 220px;
     padding: 15px;
   }
   .content {
