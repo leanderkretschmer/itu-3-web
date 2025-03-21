@@ -1,39 +1,61 @@
 <?php
-// DB-Verbindung (z. B. über mysqli)
+// DB-Verbindung (z. B. mit mysqli)
 require_once '../db_connect.php';
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 /*
-Unterscheidung der API-Anfragen:
-- POST:
-  • Wenn "eintrag_md" gesendet wird: neuer Wiki‑Eintrag
-  • Wenn "comment_text" gesendet wird: neuer Kommentar für einen Wiki‑Eintrag
-- GET:
-  • action=getWiki → Liefert alle Wiki‑Einträge als hierarchische JSON-Struktur zurück.
-  • action=getComments & entry_id=… → Liefert alle Kommentare zu einem Wiki‑Eintrag.
+Drei Funktionalitäten:
+1. POST-Request für den neuen Wiki-Eintrag via Markdown.
+2. GET-Request mit ?action=getWiki, um alle Wiki-Einträge als hierarchische JSON-Struktur auszugeben.
+3. Ansonsten wird die HTML-Seite (OnePager) ausgegeben.
 */
 
-// Wiki‑Einträge verarbeiten (Markdown parsen)
+// POST: Neuen Wiki-Eintrag verarbeiten
+if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['eintrag_md'])) {
+    $markdown = $_POST['eintrag_md'];
+    processWikiEntry($conn, $markdown);
+    header('Content-Type: application/json');
+    echo json_encode(["message" => "Eintrag erfolgreich verarbeitet!"]);
+    exit;
+}
+
+// GET: Wiki-Einträge als JSON zurückliefern
+if ($_SERVER['REQUEST_METHOD'] === 'GET' && isset($_GET['action']) && $_GET['action'] === 'getWiki') {
+    header('Content-Type: application/json');
+    $entries = getWikiEntries($conn);
+    echo json_encode($entries);
+    exit;
+}
+
+/*
+Funktion: processWikiEntry()
+Parst den übergebenen Markdown-Text zeilenweise. Jede Zeile,
+die mit (“#+”) beginnt, markiert einen neuen Titel auf einem bestimmten
+Hierarchielevel – alle folgenden Zeilen ohne führende Hashtags werden als
+Inhalt dieses Eintrags interpretiert.
+Zur Speicherung greifen wir auf die Tabelle wiki_entries zu.
+*/
 function processWikiEntry($conn, $markdown) {
-    // Den Markdown-Text zeilenweise zerlegen:
+    // Den Markdown-Text zeilenweise auseinandernehmen:
     $lines = preg_split('/\r\n|\r|\n/', $markdown);
     $entries = [];
     $currentEntry = null;
     foreach ($lines as $line) {
         if (preg_match('/^(#+)\s*(.*)$/', $line, $matches)) {
-            // Überschrift gefunden: Anzahl der Hashtags = Hierarchielevel
+            // Überschrift gefunden
             $level = strlen($matches[1]);
             $title = trim($matches[2]);
             if ($currentEntry !== null) {
                 $entries[] = $currentEntry;
             }
+            // Beginne einen neuen Eintrag:
             $currentEntry = [
                 "level"   => $level,
                 "title"   => $title,
                 "content" => ""
             ];
         } else {
-            // Zeile ohne Hashtag: als Inhalt des aktuellen Eintrags anhängen
+            // Normale Zeile: Hänge diese als Inhalt an den aktuellen Eintrag an
             if ($currentEntry !== null) {
                 $currentEntry["content"] .= $line . "\n";
             }
@@ -43,58 +65,57 @@ function processWikiEntry($conn, $markdown) {
         $entries[] = $currentEntry;
     }
 
-    // Mit Hilfe eines Arrays wird für jedes Level der zuletzt eingefügte Eintrag gespeichert,
-    // um die Parent‑Beziehung herzustellen.
+    // Jetzt werden die Einträge verarbeitet – unter Beachtung von Eltern-Kind-Beziehungen.
+    // Hier speichern wir den zuletzt eingefügten Eintrag für jedes Level, um
+    // so den parent_id zu bestimmen.
     $lastEntryOfLevel = [];
 
     foreach ($entries as $entry) {
-        $level   = $entry["level"];
-        $title   = $entry["title"];
+        $level = $entry["level"];
+        $title = $entry["title"];
         $content = trim($entry["content"]);
 
-        // Parent bestimmen: Level‑1 hat keinen Parent, bei tieferen Levels wird der zuletzt
-        // eingefügte Eintrag der übergeordneten Ebene verwendet.
+        // Bestimme die parent_id (bei Level 1: kein Parent)
         $parent_id = null;
         if ($level > 1 && isset($lastEntryOfLevel[$level - 1])) {
             $parent_id = $lastEntryOfLevel[$level - 1];
         }
 
-        // Prüfen, ob bereits ein Eintrag mit gleichem Titel, Level und (falls vorhanden)
-        // gleicher parent_id existiert.
+        // Prüfe, ob bereits ein Eintrag mit gleichem Titel, Level und
+        // (falls vorhanden) gleicher parent_id existiert.
         if ($parent_id === null) {
-            $stmt = $conn->prepare("SELECT id FROM wiki_entries 
-                WHERE title = ? AND level = ? AND parent_id IS NULL");
+            $stmt = $conn->prepare(
+                "SELECT id FROM wiki_entries WHERE title = ? AND level = ? AND parent_id IS NULL"
+            );
             $stmt->bind_param("si", $title, $level);
         } else {
-            $stmt = $conn->prepare("SELECT id FROM wiki_entries 
-                WHERE title = ? AND level = ? AND parent_id = ?");
+            $stmt = $conn->prepare(
+                "SELECT id FROM wiki_entries WHERE title = ? AND level = ? AND parent_id = ?"
+            );
             $stmt->bind_param("sii", $title, $level, $parent_id);
         }
         $stmt->execute();
         $result = $stmt->get_result();
 
         if ($row = $result->fetch_assoc()) {
-            // Eintrag existiert bereits – Inhalt anhängen
+            // Der Eintrag existiert bereits – ergänze den Inhalt.
             $entry_id = $row["id"];
             $stmtUpdate = $conn->prepare(
-                "UPDATE wiki_entries SET content = CONCAT(content, ?) 
-                 WHERE id = ?"
+                "UPDATE wiki_entries SET content = CONCAT(content, ?) WHERE id = ?"
             );
             $additional = "\n" . $content;
             $stmtUpdate->bind_param("si", $additional, $entry_id);
             $stmtUpdate->execute();
         } else {
-            // Neuer Eintrag anlegen:
+            // Neuer Eintrag: In der Tabelle speichern.
             if ($parent_id === null) {
                 $stmtInsert = $conn->prepare(
-                    "INSERT INTO wiki_entries (parent_id, level, title, content) 
-                     VALUES (NULL, ?, ?, ?)"
+                    "INSERT INTO wiki_entries (parent_id, level, title, content) VALUES (NULL, ?, ?, ?)"
                 );
                 $stmtInsert->bind_param("iss", $level, $title, $content);
             } else {
                 $stmtInsert = $conn->prepare(
-                    "INSERT INTO wiki_entries (parent_id, level, title, content) 
-                     VALUES (?, ?, ?, ?)"
+                    "INSERT INTO wiki_entries (parent_id, level, title, content) VALUES (?, ?, ?, ?)"
                 );
                 $stmtInsert->bind_param("iiss", $parent_id, $level, $title, $content);
             }
@@ -103,7 +124,7 @@ function processWikiEntry($conn, $markdown) {
         }
 
         $lastEntryOfLevel[$level] = $entry_id;
-        // Entferne ggf. Einträge von tieferen Ebenen
+        // Entferne Einträge von tieferen Ebenen, falls vorhanden.
         for ($i = $level + 1; $i <= count($lastEntryOfLevel) + 1; $i++) {
             if (isset($lastEntryOfLevel[$i])) {
                 unset($lastEntryOfLevel[$i]);
@@ -112,7 +133,12 @@ function processWikiEntry($conn, $markdown) {
     }
 }
 
-// Liefert alle Wiki‑Einträge als hierarchische JSON-Struktur
+/*
+Funktion: getWikiEntries()
+Liest alle Wiki-Einträge aus der Tabelle aus und baut daraus eine hierarchische
+Struktur (Eltern-Kind-Beziehungen). Die Einträge werden anschliessend
+alphabetisch sortiert (auf jeder Ebene).
+*/
 function getWikiEntries($conn) {
     $query = "SELECT id, parent_id, level, title, content FROM wiki_entries";
     $result = $conn->query($query);
@@ -120,7 +146,7 @@ function getWikiEntries($conn) {
     while ($row = $result->fetch_assoc()) {
         $entries[] = $row;
     }
-    // Aufbau einer Baumstruktur anhand der Parent‑Beziehungen
+    // Erstelle einen Index, um die Hierarchie aufzubauen.
     $tree = [];
     $byId = [];
     foreach ($entries as $entry) {
@@ -134,7 +160,7 @@ function getWikiEntries($conn) {
             $tree[] = &$entry;
         }
     }
-    // Rekursive alphabetische Sortierung der Einträge auf jeder Ebene
+    // Rekursive Sortierung: alphabetisch nach Titel (auf jeder Ebene)
     function sortEntries(&$entries) {
         usort($entries, function ($a, $b) {
             return strcmp($a['title'], $b['title']);
@@ -148,68 +174,6 @@ function getWikiEntries($conn) {
     sortEntries($tree);
     return $tree;
 }
-
-// Kommentare lesen für einen bestimmten Wiki‑Eintrag
-function getComments($conn, $entry_id) {
-    $stmt = $conn->prepare("SELECT id, entry_id, username, comment, selected_text, 
-        created_at FROM wiki_comments WHERE entry_id = ? ORDER BY created_at ASC");
-    $stmt->bind_param("i", $entry_id);
-    $stmt->execute();
-    $result = $stmt->get_result();
-    $comments = [];
-    while ($row = $result->fetch_assoc()) {
-        $comments[] = $row;
-    }
-    return $comments;
-}
-
-// Neuen Kommentar speichern
-function processComment($conn, $entry_id, $username, $comment, $selected_text = "") {
-    $stmt = $conn->prepare(
-        "INSERT INTO wiki_comments (entry_id, username, comment, selected_text, created_at) 
-         VALUES (?, ?, ?, ?, NOW())"
-    );
-    $stmt->bind_param("isss", $entry_id, $username, $comment, $selected_text);
-    $stmt->execute();
-    return $conn->insert_id;
-}
-
-// API-Endpoints abarbeiten:
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    header('Content-Type: application/json');
-    if (isset($_POST['eintrag_md'])) {
-        // Verarbeitung eines neuen Wiki‑Eintrags
-        $markdown = $_POST['eintrag_md'];
-        processWikiEntry($conn, $markdown);
-        echo json_encode(["message" => "Wiki-Eintrag erfolgreich verarbeitet!"]);
-        exit;
-    } elseif (isset($_POST['comment_text'])) {
-        // Verarbeitung eines neuen Kommentars
-        $entry_id     = (int) $_POST['entry_id'];
-        $username     = $_POST['username'];
-        $comment      = $_POST['comment_text'];
-        $selected_text= isset($_POST['selected_text']) ? $_POST['selected_text'] : "";
-        processComment($conn, $entry_id, $username, $comment, $selected_text);
-        echo json_encode(["message" => "Kommentar erfolgreich gespeichert!"]);
-        exit;
-    }
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-    header('Content-Type: application/json');
-    if (isset($_GET['action']) && $_GET['action'] === 'getWiki') {
-        echo json_encode(getWikiEntries($conn));
-        exit;
-    } elseif (
-        isset($_GET['action']) &&
-        $_GET['action'] === 'getComments' &&
-        isset($_GET['entry_id'])
-    ) {
-        $entry_id = (int) $_GET['entry_id'];
-        echo json_encode(getComments($conn, $entry_id));
-        exit;
-    }
-}
 ?>
 
 <!DOCTYPE html>
@@ -218,82 +182,95 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wiki OnePager</title>
-  <!-- Einbindung der externen CSS-Datei -->
-  <link rel="stylesheet" type="text/css" href="style.css" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    /* Optional: Stil für das Modal */
+    .modal {
+      display: none;
+    }
+    .modal.active {
+      display: block;
+    }
+  </style>
 </head>
-<body>
-  <div class="container">
-    <!-- Linke Sidebar -->
-    <div class="sidebar">
-      <h2>Wiki Übersicht</h2>
-      <ul id="wikiList">
-        <!-- Wiki-Einträge werden hier per JavaScript geladen -->
+<body class="bg-gray-100">
+  <div class="flex min-h-screen">
+    <!-- Seitenleiste -->
+    <div class="w-1/4 bg-white p-4 overflow-y-auto border-r">
+      <h2 class="text-lg font-bold mb-4">Wiki Übersicht</h2>
+      <ul id="wikiList" class="space-y-2">
+        <!-- Wiki-Einträge werden hier dynamisch via JS geladen -->
       </ul>
     </div>
-
-    <!-- Hauptbereich -->
-    <div class="content">
-      <h1 id="contentTitle">Willkommen im Wiki</h1>
-      <div id="contentArea"></div>
-      <!-- Kommentarbereich -->
-      <div id="commentSection"></div>
+    <!-- Hauptinhalt -->
+    <div class="flex-1 p-6">
+      <h1 class="text-2xl font-bold" id="contentTitle">Willkommen im Wiki</h1>
+      <div id="contentArea" class="mt-4 text-gray-700"></div>
     </div>
   </div>
 
   <!-- Fixierter Button "Eintrag" unten rechts -->
-  <button id="openEntryButton">Eintrag</button>
+  <button
+    id="openEntryButton"
+    class="fixed bottom-4 right-4 bg-blue-500 text-white p-4 rounded-full shadow-lg"
+  >
+    Eintrag
+  </button>
 
-  <!-- Modal für neuen Wiki-Eintrag -->
-  <div id="entryModal" class="modal">
-    <div class="modal-content">
-      <h2>Neuer Wiki Eintrag</h2>
-      <textarea id="markdownInput" placeholder="Gib deinen Markdown Text ein..."></textarea>
-      <div>
-        <button id="closeEntryModal">Schließen</button>
-        <button id="saveEntryButton">Speichern</button>
-      </div>
-    </div>
-  </div>
-
-  <!-- Modal für Kommentare -->
-  <div id="commentModal" class="modal">
-    <div class="modal-content">
-      <h2>Neuer Kommentar</h2>
-      <textarea id="commentInput" placeholder="Schreibe deinen Kommentar..."></textarea>
-      <div>
-        <button id="closeCommentModal">Schließen</button>
-        <button id="submitCommentBtn">Kommentar absenden</button>
+  <!-- Modal für den Markdown-Eintrag -->
+  <div
+    id="entryModal"
+    class="modal fixed inset-0 flex items-center justify-center bg-black bg-opacity-50"
+  >
+    <div class="bg-white p-6 rounded shadow-lg w-11/12 max-w-lg relative">
+      <h2 class="text-xl font-bold mb-4">Neuer Wiki Eintrag</h2>
+      <textarea
+        id="markdownInput"
+        class="w-full h-48 p-2 border rounded"
+        placeholder="Gib deinen Markdown Text ein..."
+      ></textarea>
+      <div class="mt-4 flex justify-end space-x-2">
+        <button
+          id="closeModalButton"
+          class="px-4 py-2 bg-gray-300 rounded"
+        >
+          Schließen
+        </button>
+        <button
+          id="saveEntryButton"
+          class="px-4 py-2 bg-green-500 text-white rounded"
+        >
+          Speichern
+        </button>
       </div>
     </div>
   </div>
 
   <script>
-    // Global speichern wir die ID des aktuell gewählten Wiki-Eintrags (für Kommentare)
-    let currentEntryId = null;
-
     document.addEventListener("DOMContentLoaded", () => {
       loadWikiEntries();
 
-      // Handling Wiki-Eintrag-Modal
       const openEntryButton = document.getElementById("openEntryButton");
       const entryModal = document.getElementById("entryModal");
-      const closeEntryModal = document.getElementById("closeEntryModal");
+      const closeModalButton = document.getElementById("closeModalButton");
       const saveEntryButton = document.getElementById("saveEntryButton");
 
       openEntryButton.addEventListener("click", () => {
         entryModal.classList.add("active");
       });
 
-      closeEntryModal.addEventListener("click", () => {
+      closeModalButton.addEventListener("click", () => {
         entryModal.classList.remove("active");
       });
 
       saveEntryButton.addEventListener("click", () => {
-        const markdown = document.getElementById("markdownInput").value;
+        const markdown =
+          document.getElementById("markdownInput").value;
         if (markdown.trim() === "") {
           alert("Bitte einen Eintrag eingeben.");
           return;
         }
+        // Markdown via POST absenden
         fetch("<?php echo $_SERVER['PHP_SELF']; ?>", {
           method: "POST",
           headers: {
@@ -309,70 +286,39 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
             entryModal.classList.remove("active");
             loadWikiEntries();
           })
-          .catch((error) =>
-            console.error("Fehler beim Speichern des Eintrags:", error)
-          );
-      });
-
-      // Handling Kommentar-Modal
-      const commentModal = document.getElementById("commentModal");
-      const closeCommentModal = document.getElementById("closeCommentModal");
-      const submitCommentBtn = document.getElementById("submitCommentBtn");
-
-      closeCommentModal.addEventListener("click", () => {
-        commentModal.classList.remove("active");
-      });
-
-      submitCommentBtn.addEventListener("click", () => {
-        const commentText = document.getElementById("commentInput").value;
-        if (commentText.trim() === "") {
-          alert("Bitte einen Kommentar eingeben.");
-          return;
-        }
-        // Ausgewählten Text (falls vorhanden) ermitteln
-        let selectedText = "";
-        const selection = window.getSelection().toString();
-        if (selection) {
-          selectedText = selection;
-        }
-        // Für das Beispiel verwenden wir einen festen Benutzernamen.
-        const username = "DemoUser";
-        fetch("<?php echo $_SERVER['PHP_SELF']; ?>", {
-          method: "POST",
-          headers: {
-            "Content-Type":
-              "application/x-www-form-urlencoded;charset=UTF-8"
-          },
-          body:
-            "comment_text=" +
-            encodeURIComponent(commentText) +
-            "&entry_id=" +
-            encodeURIComponent(currentEntryId) +
-            "&username=" +
-            encodeURIComponent(username) +
-            "&selected_text=" +
-            encodeURIComponent(selectedText)
-        })
-          .then((response) => response.json())
-          .then((data) => {
-            alert(data.message);
-            document.getElementById("commentInput").value = "";
-            commentModal.classList.remove("active");
-            loadComments(currentEntryId);
-          })
-          .catch((error) =>
-            console.error("Fehler beim Speichern des Kommentars:", error)
-          );
+          .catch((error) => {
+            console.error("Fehler beim Speichern des Eintrags:", error);
+          });
       });
     });
 
-    // Wiki-Einträge in der Sidebar laden
+    // Lädt alle Wiki-Einträge via AJAX, baut die Sidebar auf
     function loadWikiEntries() {
       fetch("<?php echo $_SERVER['PHP_SELF']; ?>?action=getWiki")
         .then((response) => response.json())
         .then((data) => {
           const wikiList = document.getElementById("wikiList");
           wikiList.innerHTML = "";
+          // Rekursive Funktion zum Rendern der Einträge (mit Einrückung je nach Level)
+          function renderEntries(entries, container) {
+            entries.forEach((entry) => {
+              const li = document.createElement("li");
+              li.style.marginLeft =
+                (entry.level - 1) * 20 + "px";
+              const button = document.createElement("button");
+              button.className =
+                "w-full text-left font-semibold hover:underline";
+              button.textContent = entry.title;
+              button.addEventListener("click", () =>
+                loadContent(entry)
+              );
+              li.appendChild(button);
+              container.appendChild(li);
+              if (entry.children && entry.children.length > 0) {
+                renderEntries(entry.children, container);
+              }
+            });
+          }
           renderEntries(data, wikiList);
         })
         .catch((error) =>
@@ -380,87 +326,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         );
     }
 
-    // Rekursive Darstellung der Wiki-Einträge in der Sidebar
-    function renderEntries(entries, container) {
-      entries.forEach((entry) => {
-        const li = document.createElement("li");
-        li.style.marginLeft = (entry.level - 1) * 20 + "px";
-        const entryButton = document.createElement("button");
-        entryButton.textContent = entry.title;
-        entryButton.addEventListener("click", () => {
-          loadContent(entry);
-          currentEntryId = entry.id;
-        });
-        li.appendChild(entryButton);
-
-        // Kommentar-Button (erscheint per CSS beim Hover)
-        const commentBtn = document.createElement("button");
-        commentBtn.textContent = "Kommentar";
-        commentBtn.className = "comment-btn";
-        commentBtn.addEventListener("click", (e) => {
-          e.stopPropagation();
-          currentEntryId = entry.id;
-          document.getElementById("commentModal").classList.add("active");
-        });
-        li.appendChild(commentBtn);
-
-        container.appendChild(li);
-        if (entry.children && entry.children.length > 0) {
-          renderEntries(entry.children, container);
-        }
-      });
-    }
-
-    // Inhalt des Wiki-Eintrags laden und im Hauptbereich anzeigen
+    // Lädt den Inhalt eines Eintrags in den Hauptbereich
     function loadContent(entry) {
-      document.getElementById("contentTitle").textContent = entry.title;
-      document.getElementById("contentArea").textContent = entry.content;
-      loadComments(entry.id);
-    }
-
-    // Kommentare zu einem Wiki-Eintrag laden und anzeigen
-    function loadComments(entryId) {
-      fetch(
-        "<?php echo $_SERVER['PHP_SELF']; ?>?action=getComments&entry_id=" +
-          entryId
-      )
-        .then((response) => response.json())
-        .then((data) => {
-          const commentSection = document.getElementById("commentSection");
-          commentSection.innerHTML = "";
-          if (data.length === 0) {
-            commentSection.innerHTML =
-              "<p>Keine Kommentare vorhanden.</p>";
-            return;
-          }
-          data.forEach((comment) => {
-            const commentDiv = document.createElement("div");
-            commentDiv.className = "comment";
-
-            const userIconDiv = document.createElement("div");
-            userIconDiv.className = "user-icon";
-            const userImg = document.createElement("img");
-            userImg.src = "https://via.placeholder.com/30";
-            userIconDiv.appendChild(userImg);
-
-            const commentContentDiv = document.createElement("div");
-            commentContentDiv.className = "comment-content";
-            commentContentDiv.textContent = comment.comment;
-            // Beim Hover soll der (vom Benutzer ausgewählte) Text angezeigt werden,
-            // wenn dieser vorhanden ist.
-            commentContentDiv.setAttribute(
-              "data-selected",
-              comment.selected_text
-            );
-
-            commentDiv.appendChild(userIconDiv);
-            commentDiv.appendChild(commentContentDiv);
-            commentSection.appendChild(commentDiv);
-          });
-        })
-        .catch((error) =>
-          console.error("Fehler beim Laden der Kommentare:", error)
-        );
+      document.getElementById("contentTitle").textContent =
+        entry.title;
+      document.getElementById("contentArea").textContent =
+        entry.content;
     }
   </script>
 </body>
