@@ -5,7 +5,7 @@ body {
   padding: 0;
   overflow: hidden; /* Verhindert ungewolltes Scrollen */
   height: 100%;
-  background-color: #d3d3d3; /* Helles Grau als Hintergrund */
+  background-color: #24292e; /* Helles Grau als Hintergrund */
 }
 
 /* Container für Seitenleiste und Inhalt */
