@@ -189,18 +189,23 @@ body {
 }
 
 .user-button {
-    width: 40px;
-    height: 40px;
+    width: 50px;  /* Größe des Buttons */
+    height: 50px;
     border-radius: 50%;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+    overflow: hidden; /* Verhindert, dass das Bild über den Kreis hinausgeht */
+    padding: 0;
     border: none;
-    cursor: pointer;
+    background: none;
     display: flex;
     align-items: center;
     justify-content: center;
-    overflow: hidden; /* Stellt sicher, dass das Bild innerhalb des Kreises bleibt */
+}
+
+.avatar-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Schneidet das Bild so zu, dass es in den Kreis passt */
+    border-radius: 50%; /* Macht das Bild rund */
 }
 
 
@@ -209,12 +214,6 @@ body {
 }
 
 
-.avatar-img {
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    object-fit: cover;
-}
 /* Dropdown-Menü versteckt */
 .dropdown-content {
     display: none;
