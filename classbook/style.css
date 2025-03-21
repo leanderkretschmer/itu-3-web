@@ -163,8 +163,7 @@ body {
   position: relative;
 }
 
-/* Beim Hover über einen Kommentar – Anzeige des ausgewählten (markierten) Inhalts
-   (Hier wird der Inhalt aus einem data‑Attribut gelesen, das du via JS füllen musst) */
+/* Beim Hover über einen Kommentar – Anzeige des ausgewählten (markierten) Inhalts */
 .comment .comment-content:hover::after {
   content: attr(data-selected);
   position: absolute;
@@ -178,7 +177,7 @@ body {
   z-index: 10;
 }
 
-/* Markierung von ausgewähltem Text (z. B. während der Kommentarerstellung) */
+/* Markierung von ausgewähltem Text */
 .selected-text {
   background: #ffff99;
 }
