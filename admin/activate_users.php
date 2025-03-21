@@ -2,7 +2,7 @@
 session_start();
 ini_set('display_errors', 1);
 error_reporting(E_ALL);
-require_once '/db_connect.php';
+require_once '../db_connect.php';
 
 // Alle in der Tabelle `users_pending` stehenden Benutzer abrufen
 $query = "SELECT * FROM users_pending";
