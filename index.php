@@ -133,9 +133,25 @@ if (empty($avatar)) {
 
     <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
 <div class="user-menu">
-<button class="user-button">
-    <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Profilbild" class="avatar-img">
+<button class="user-button" style="
+    width: 50px; 
+    height: 50px; 
+    border-radius: 50%; 
+    overflow: hidden; 
+    padding: 0; 
+    border: none; 
+    background: none; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;">
+    
+    <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Profilbild" style="
+        width: 100%; 
+        height: 100%; 
+        object-fit: cover; 
+        border-radius: 50%;">
 </button>
+
 
 
 
