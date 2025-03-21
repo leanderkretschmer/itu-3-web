@@ -1,0 +1,201 @@
+/* Basis */
+body {
+  font-family: sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: auto;
+  height: 100%;
+}
+
+/* Seitenleiste (Sidebar) – schmaler und mit Drop‑Shadow */
+.sidebar {
+  width: 200px; /* schmalere Breite */
+  background-color: #f6f8fa;
+  padding: 20px;
+  border-right: 1px solid #d0d7de;
+  box-shadow: 2px 0 5px rgba(0, 0, 0, 0.3);
+}
+
+.sidebar h2 {
+  margin-top: 0;
+  color: #24292e;
+  font-size: 1.2em;
+  margin-bottom: 15px;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.sidebar li {
+  margin-bottom: 8px;
+  position: relative;
+}
+
+/* Standard-Link in der Sidebar */
+.sidebar a {
+  display: block;
+  padding: 8px 12px;
+  text-decoration: none;
+  color: #0969da;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.sidebar a:hover {
+  background-color: rgba(0, 0, 0, 0.08);
+}
+
+/* Kommentar‑Button in der Sidebar – erscheint beim Hover */
+.sidebar .comment-btn {
+  display: none;
+  position: absolute;
+  right: 5px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: #0969da;
+  color: #fff;
+  border: none;
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.sidebar li:hover .comment-btn {
+  display: block;
+}
+
+/* Hauptinhalt (Wiki‑Einträge) – sorgt für ausreichende Abstände */
+.content {
+  flex: 1;
+  padding: 20px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+/* Stil für einzelne Wiki‑Einträge */
+.wiki-entry {
+  background: #fff;
+  border: 1px solid #d0d7de;
+  border-radius: 6px;
+  padding: 15px;
+  margin-bottom: 20px;
+  position: relative;
+}
+
+/* Optional: Abstand zwischen den Wiki‑Einträgen */
+.wiki-entry:not(:first-child) {
+  margin-top: 10px;
+}
+
+/* Modal (neuer Eintrag) – standardmäßig ausgeblendet */
+.modal {
+  display: none;
+  opacity: 0;
+  transition: opacity 0.3s ease;
+}
+
+.modal.active {
+  display: flex;
+  opacity: 1;
+}
+
+/* Modal-Container (das weiße Feld) */
+.modal .modal-content {
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 6px;
+  width: 90%;
+  max-width: 600px;
+}
+
+/* Fixierter „Eintrag“ Button unten rechts */
+#openEntryButton {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #0969da;
+  color: #fff;
+  border: none;
+  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+  font-size: 14px;
+}
+
+/* Kommentarblock innerhalb eines Wiki‑Eintrags */
+.comment-block {
+  margin-top: 15px;
+  border-top: 1px solid #d0d7de;
+  padding-top: 10px;
+}
+
+/* Einzelner Kommentar – Anzeige des User Icons und Text */
+.comment {
+  display: flex;
+  align-items: flex-start;
+  margin-bottom: 10px;
+}
+
+.comment .user-icon {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.comment .user-icon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.comment .comment-content {
+  background: #f1f3f5;
+  padding: 8px 12px;
+  border-radius: 6px;
+  position: relative;
+}
+
+/* Beim Hover über einen Kommentar – Anzeige des ausgewählten (markierten) Inhalts
+   (Hier wird der Inhalt aus einem data‑Attribut gelesen, das du via JS füllen musst) */
+.comment .comment-content:hover::after {
+  content: attr(data-selected);
+  position: absolute;
+  top: -40px;
+  left: 0;
+  background: #fffa;
+  padding: 5px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  white-space: pre-wrap;
+  z-index: 10;
+}
+
+/* Markierung von ausgewähltem Text (z. B. während der Kommentarerstellung) */
+.selected-text {
+  background: #ffff99;
+}
+
+/* Responsive Anpassungen */
+@media screen and (max-width: 768px) {
+  .sidebar {
+    width: 160px;
+    padding: 15px;
+  }
+  .content {
+    margin-left: 15px;
+    margin-right: 15px;
+    padding: 15px;
+  }
+  #openEntryButton {
+    width: 50px;
+    height: 50px;
+  }
+}
