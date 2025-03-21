@@ -133,8 +133,10 @@ if (empty($avatar)) {
 
     <!-- Benutzer-Button und Dropdown-Menü oben rechts -->
 <div class="user-menu">
-    <button class="user-button" style="background-image: url('<?php echo htmlspecialchars($avatar); ?>');">
-    </button>
+<button class="user-button">
+    <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Profilbild" class="avatar-img">
+</button>
+
     <!-- Dropdown-Menü -->
     <div class="dropdown-content">
         <a href="profile.php">Profil</a>
