@@ -149,7 +149,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['activate_user'])) {
 
         <div class="message">
             <br>
-            <a href="index.php">Zurück zur Startseite</a>
+            <a href="../index.php">Zurück zur Startseite</a>
         </div>
     </div>
 
