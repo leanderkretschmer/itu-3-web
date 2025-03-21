@@ -137,6 +137,7 @@ if (empty($avatar)) {
     <img src="<?php echo htmlspecialchars($avatar); ?>" alt="Profilbild" class="avatar-img">
 </button>
 
+
     <!-- Dropdown-Menü -->
     <div class="dropdown-content">
         <a href="profile.php">Profil</a>
