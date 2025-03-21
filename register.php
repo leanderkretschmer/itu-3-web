@@ -39,23 +39,99 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registrierung</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            color: #333;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            margin-top: 50px;
+            color: #4CAF50;
+        }
+
+        .container {
+            max-width: 500px;
+            margin: 0 auto;
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        label {
+            font-size: 1.1em;
+            margin-bottom: 8px;
+            display: block;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            padding: 15px;
+            width: 100%;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 1.1em;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        .message {
+            text-align: center;
+            font-size: 1.2em;
+        }
+
+        .message a {
+            color: #4CAF50;
+            text-decoration: none;
+        }
+
+        .message a:hover {
+            text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
+
     <h1>Benutzerregistrierung</h1>
-    <form action="register.php" method="POST">
-        <label for="name">Name:</label>
-        <input type="text" name="name" required><br><br>
 
-        <label for="username">Benutzername:</label>
-        <input type="text" name="username" required><br><br>
+    <div class="container">
+        <form action="register.php" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" name="name" required><br>
 
-        <label for="password">Passwort:</label>
-        <input type="password" name="password" required><br><br>
+            <label for="username">Benutzername:</label>
+            <input type="text" name="username" required><br>
 
-        <button type="submit">Registrieren</button>
-    </form>
-    <br>
-    <a href="index.php">Zurück zur Startseite</a>
+            <label for="password">Passwort:</label>
+            <input type="password" name="password" required><br>
+
+            <button type="submit">Registrieren</button>
+        </form>
+
+        <div class="message">
+            <br>
+            <a href="index.php">Zurück zur Startseite</a>
+        </div>
+    </div>
+
 </body>
 </html>
