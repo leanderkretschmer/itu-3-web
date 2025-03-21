@@ -140,7 +140,7 @@ function getWikiEntries($conn) {
     while ($row = $result->fetch_assoc()) {
         $entries[] = $row;
     }
-    // Hier wird eine Baumstruktur anhand der Parent-Beziehungen aufgebaut.
+    // Aufbau einer Baumstruktur anhand der Parent-Beziehungen.
     $tree = [];
     $byId = [];
     foreach ($entries as $entry) {
@@ -154,7 +154,7 @@ function getWikiEntries($conn) {
             $tree[] = &$entry;
         }
     }
-    // Rekursive sortierung: alphabetisch nach Titel (auf jeder Ebene)
+    // Rekursive alphabetische Sortierung: sortiert jede Ebene nach Titel.
     function sortEntries(&$entries) {
         usort($entries, function ($a, $b) {
             return strcmp($a['title'], $b['title']);
@@ -180,17 +180,22 @@ function getWikiEntries($conn) {
   <link rel="stylesheet" type="text/css" href="style.css" />
 </head>
 <body>
+  <!-- Header: Überschrift über die gesamte Seite -->
+  <header class="site-header">
+    <h1>Willkommen im Wiki</h1>
+  </header>
+
+  <!-- Container für Sidebar und Hauptinhalt -->
   <div class="container">
     <!-- Linke Seitenleiste -->
     <div class="sidebar">
-      <h2>Wiki Übersicht</h2>
       <ul id="wikiList">
         <!-- Wiki-Einträge werden hier per JavaScript geladen -->
       </ul>
     </div>
     <!-- Hauptbereich -->
     <div class="content">
-      <h1 id="contentTitle">Willkommen im Wiki</h1>
+      <!-- Hier werden bei Bedarf Detailinhalte angezeigt -->
       <div id="contentArea"></div>
     </div>
   </div>
@@ -259,7 +264,7 @@ function getWikiEntries($conn) {
         .then(data => {
           const wikiList = document.getElementById("wikiList");
           wikiList.innerHTML = "";
-          // Rekursive Funktion zum Rendern der Einträge (mit Einrückung je nach Level)
+          // Rekursive Funktion zum Rendern der Einträge (Einrücken entsprechend des Levels)
           function renderEntries(entries, container) {
             entries.forEach(entry => {
               const li = document.createElement("li");
@@ -280,9 +285,8 @@ function getWikiEntries($conn) {
         .catch(error => console.error("Fehler beim Laden der Wiki Einträge:", error));
     }
 
-    // Inhalt eines Wiki-Eintrags laden und im Hauptbereich anzeigen
+    // Inhalt eines Wiki-Eintrags in den Hauptbereich laden
     function loadContent(entry) {
-      document.getElementById("contentTitle").textContent = entry.title;
       document.getElementById("contentArea").textContent = entry.content;
     }
   </script>
