@@ -189,10 +189,10 @@ body {
 }
 
 .user-button {
-    width: 50px;  /* Größe des Buttons */
+    width: 50px; /* Größe des Buttons */
     height: 50px;
     border-radius: 50%;
-    overflow: hidden; /* Verhindert, dass das Bild über den Kreis hinausgeht */
+    overflow: hidden; /* Stellt sicher, dass nichts über den Kreis hinausgeht */
     padding: 0;
     border: none;
     background: none;
@@ -201,11 +201,11 @@ body {
     justify-content: center;
 }
 
-.avatar-img {
-    width: 100%;
+.user-button img {
+    width: 100%; /* Bildgröße auf Button-Größe setzen */
     height: 100%;
-    object-fit: cover; /* Schneidet das Bild so zu, dass es in den Kreis passt */
-    border-radius: 50%; /* Macht das Bild rund */
+    object-fit: cover; /* Stellt sicher, dass das Bild in den Kreis passt */
+    border-radius: 50%; /* Bild selbst rund machen */
 }
 
 
